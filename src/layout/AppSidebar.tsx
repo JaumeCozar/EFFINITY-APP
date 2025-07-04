@@ -56,10 +56,14 @@ const navItems: NavItem[] = [
   {
     name: "Tables",
     icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false },
+    subItems: [
               { name: "Usuarios", path: "/table-usuarios", pro: false }
     ],
   },
+//{ name: "Basic Tables", path: "/basic-tables", pro: false },
+
+
+
   // {
   //   name: "Pages",
   //   icon: <PageIcon />,
