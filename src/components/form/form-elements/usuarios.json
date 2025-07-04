@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "image": "/images/user/user-17.jpg",
+    "nombre": "Paco de Lucia",
+    "email": "paco@lucia.com",
+    "contrasena": "paco1234",
+    "rol": "adm",
+    "estado": "act",
+    "ubicacion": "Cocina Tarragona"
+  },
+  {
+    "id": "2",
+    "image": "/images/user/user-18.jpg",
+    "nombre": "Ana García",
+    "email": "ana@garcia.com",
+    "contrasena": "ana1234",
+    "rol": "ope",
+    "estado": "act",
+    "ubicacion": "Cocina Tarragona"
+  },
+  {
+    "id": "3",
+    "image": "/images/user/user-19.jpg",
+    "nombre": "Carlos Fernández",
+    "email": "carlos@fernandez.com",
+    "contrasena": "carlos1234",
+    "rol": "com",
+    "estado": "act",
+    "ubicacion": "Cocina Tarragona"
+  },
+  {
+    "id": "4",
+    "image": "/images/user/user-20.jpg",
+    "nombre": "María Pérez",
+    "email": "maria@perez.com",
+    "contrasena": "maria1234",
+    "rol": "ope",
+    "estado": "act",
+    "ubicacion": "Cocina Tarragona"
+  },
+  {
+    "id": "5",
+    "image": "/images/user/user-21.jpg",
+    "nombre": "Luis Gómez",
+    "email": "luis@gomez.com",
+    "contrasena": "luis1234",
+    "rol": "adm",
+    "estado": "act",
+    "ubicacion": "Cocina Tarragona"
+  }
+]
