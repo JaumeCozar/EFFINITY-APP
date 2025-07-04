@@ -1,4 +1,14 @@
 // import { useState} from "react";
+import { useState, useEffect } from "react";
+import { useModal } from "../../../hooks/useModal";
+import { Modal } from "../../ui/modal";
+import Button from "../../ui/button/Button";
+import ComponentCard from "../../common/ComponentCard";
+import Label from "../../form/Label";
+import Input from "../../../components/form/input/InputField";
+import Select from "react-select";
+import { EnvelopeIcon } from "../../../icons";
+import { EyeCloseIcon, EyeIcon} from "../../../icons";
 import {
   Table,
   TableBody,
@@ -50,6 +60,64 @@ export default function BasicTableOneModUsuarios() {
   //   estado: "",
   //   ubicacion: ""
   // });
+
+  const { isOpen, openModal, closeModal } = useModal();
+  const handleSave = () => {
+    // Handle save logic here
+    console.log("Saving changes...");
+    closeModal();
+  };
+
+   const [showPassword, setShowPassword] = useState(false);
+
+    // Estado para almacenar los datos del formulario
+  const [formData, setFormData] = useState({
+    nombre: "",
+    email: "",
+    contrasena: "",
+    rol: "",
+    estado: "",
+    ubicacion: ""
+  });
+
+  const optionsRol = [
+    { value: "Admin", label: "Admin" },
+    { value: "Operario", label: "Operario" },
+    { value: "Comercial", label: "Comercial" },
+  ];
+
+  const optionsEstado = [
+    { value: "Activo", label: "Activo" },
+    { value: "Pendiente", label: "Pendiente" },
+    { value: "Deshabilitado", label: "Deshabilitado" },
+  ];
+
+  // Esta función maneja el cambio de selección en el select de rol y estado
+  const handleSelectChange = (value: string, field: string) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [field]: value, // Actualiza el campo correspondiente (rol o estado)
+    }));
+  };
+
+  type User = typeof usuarioData[0];
+
+const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+   useEffect(() => {
+  if (selectedUser) {
+    setFormData({
+      nombre: selectedUser.nombre,
+      email: selectedUser.email,
+      contrasena: selectedUser.contrasena,
+      rol: selectedUser.rol,
+      estado: selectedUser.estado,
+      ubicacion: selectedUser.ubicacion
+    });
+  }
+}, [selectedUser]);
+
+
   return (
     <>
     <div>
@@ -156,6 +224,10 @@ export default function BasicTableOneModUsuarios() {
                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   {/* {order.budget} */}
                   <button
+                  onClick={() => {
+  setSelectedUser(user);
+  openModal();
+}}
             className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
           >
             <svg
@@ -182,6 +254,86 @@ export default function BasicTableOneModUsuarios() {
         </Table>
       </div>
     </div>
+    <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
+        <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
+          <ComponentCard title="Datos">
+      <div className="space-y-6">
+        <div>
+          <Label htmlFor="inputOne">Nombre Completo</Label>
+          <Input type="text" id="inputOne" placeholder="Paco de Lucia" value={formData.nombre} />
+        </div>
+
+        <div>
+          <Label>Email</Label>
+          <div className="relative">
+            <Input
+              placeholder="info@gmail.com"
+              type="text"
+              className="pl-[62px]"
+              value={formData.email}
+            />
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
+              <EnvelopeIcon className="size-6" />
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <Label>Contraseña</Label>
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder=""
+              value={formData.contrasena}
+            />
+            <button
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+            >
+              {showPassword ? (
+                <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+              ) : (
+                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <Label htmlFor="inputTwo">Ubicacion</Label>
+          <Input type="text" id="inputTwo" placeholder="Nombre de la Cocina" value={formData.ubicacion}/>
+        </div>
+
+        <div>
+          <Label>Rol</Label>
+          <Select
+            options={optionsRol}
+            value={optionsRol.find((option) => option.value === formData.rol) || null} // Asegúrate de que sea null si no se encuentra
+            onChange={(selectedOption) => handleSelectChange(selectedOption ? selectedOption.value : "", "rol")}
+            placeholder="Selecciona una opcion"
+            
+            className="dark:bg-dark-900"
+            
+          />
+        </div>
+
+        <div>
+          <Label>Estado</Label>
+          <Select
+            options={optionsEstado}
+            value={optionsEstado.find((option) => option.value === formData.estado) || null} // Asegúrate de que sea null si no se encuentra
+            onChange={(selectedOption) => handleSelectChange(selectedOption ? selectedOption.value : "", "estado")}
+            placeholder="Selecciona una opcion"
+            
+            className="dark:bg-dark-900"
+          />
+        </div>
+
+        <Button size="md" onClick={handleSave}>Enviar</Button>
+      </div>
+    </ComponentCard>
+        </div>
+      </Modal>
     </>
   );
 }
