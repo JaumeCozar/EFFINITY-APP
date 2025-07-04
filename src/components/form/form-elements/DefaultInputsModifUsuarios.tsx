@@ -23,15 +23,15 @@ export default function DefaultInputsModifUsuarios() {
   });
 
   const optionsRol = [
-    { value: "adm", label: "Admin" },
-    { value: "ope", label: "Operario" },
-    { value: "com", label: "Comercial" },
+    { value: "Admin", label: "Admin" },
+    { value: "Operario", label: "Operario" },
+    { value: "Comercial", label: "Comercial" },
   ];
 
   const optionsEstado = [
-    { value: "act", label: "Activo" },
-    { value: "pen", label: "Pendiente" },
-    { value: "des", label: "Deshabilitado" },
+    { value: "Activo", label: "Activo" },
+    { value: "Pendiente", label: "Pendiente" },
+    { value: "Deshabilitado", label: "Deshabilitado" },
   ];
 
   // Esta función maneja el cambio de selección en el select de rol y estado

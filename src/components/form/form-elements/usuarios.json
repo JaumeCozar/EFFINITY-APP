@@ -5,8 +5,8 @@
     "nombre": "Paco de Lucia",
     "email": "paco@lucia.com",
     "contrasena": "paco1234",
-    "rol": "adm",
-    "estado": "act",
+    "rol": "Admin",
+    "estado": "Activo",
     "ubicacion": "Cocina Tarragona"
   },
   {
@@ -15,8 +15,8 @@
     "nombre": "Ana García",
     "email": "ana@garcia.com",
     "contrasena": "ana1234",
-    "rol": "ope",
-    "estado": "act",
+    "rol": "Operario",
+    "estado": "Deshabilitado",
     "ubicacion": "Cocina Tarragona"
   },
   {
@@ -25,8 +25,8 @@
     "nombre": "Carlos Fernández",
     "email": "carlos@fernandez.com",
     "contrasena": "carlos1234",
-    "rol": "com",
-    "estado": "act",
+    "rol": "Comercial",
+    "estado": "Activo",
     "ubicacion": "Cocina Tarragona"
   },
   {
@@ -35,8 +35,8 @@
     "nombre": "María Pérez",
     "email": "maria@perez.com",
     "contrasena": "maria1234",
-    "rol": "ope",
-    "estado": "act",
+    "rol": "Operario",
+    "estado": "Activo",
     "ubicacion": "Cocina Tarragona"
   },
   {
@@ -45,8 +45,8 @@
     "nombre": "Luis Gómez",
     "email": "luis@gomez.com",
     "contrasena": "luis1234",
-    "rol": "adm",
-    "estado": "act",
+    "rol": "Admin",
+    "estado": "Pendiente",
     "ubicacion": "Cocina Tarragona"
   }
 ]

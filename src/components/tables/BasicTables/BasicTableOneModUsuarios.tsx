@@ -1,4 +1,4 @@
-import { useState} from "react";
+// import { useState} from "react";
 import {
   Table,
   TableBody,
@@ -40,16 +40,16 @@ import Badge from "../../ui/badge/Badge";
 
 
 export default function BasicTableOneModUsuarios() {
-  const [formData, setFormData] = useState({
-    id: "",
-    image: "",
-    nombre: "",
-    email: "",
-    contrasena: "",
-    rol: "",
-    estado: "",
-    ubicacion: ""
-  });
+  // const [formData, setFormData] = useState({
+  //   id: "",
+  //   image: "",
+  //   nombre: "",
+  //   email: "",
+  //   contrasena: "",
+  //   rol: "",
+  //   estado: "",
+  //   ubicacion: ""
+  // });
   return (
     <>
     <div>
@@ -96,7 +96,7 @@ export default function BasicTableOneModUsuarios() {
 
           {/* Table Body */}
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {userData.map((user, id) => (
+            {usuarioData.map((user, id) => (
               <TableRow key={id}>
                 <TableCell className="px-5 py-4 sm:px-6 text-start">
                   <div className="flex items-center gap-3">
@@ -105,12 +105,12 @@ export default function BasicTableOneModUsuarios() {
                         width={40}
                         height={40}
                         src={user.image}
-                        alt={user.name}
+                        alt={user.nombre}
                       />
                     </div>
                     <div>
                       <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                        {user.name}
+                        {user.nombre}
                       </span>
                       <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
                         {user.rol}
@@ -143,9 +143,9 @@ export default function BasicTableOneModUsuarios() {
                   <Badge
                     size="sm"
                     color={
-                      user.estado === "act"
+                      user.estado === "Activo"
                         ? "success"
-                        : user.estado === "pen"
+                        : user.estado === "Pendiente"
                         ? "warning"
                         : "error"
                     }
