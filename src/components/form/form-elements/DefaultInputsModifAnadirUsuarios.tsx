@@ -6,7 +6,7 @@ import Select from "react-select"; // Importar React Select
 import { EnvelopeIcon } from "../../../icons";
 import { EyeCloseIcon, EyeIcon} from "../../../icons";
 import Button from "../../ui/button/Button.tsx";
-import usuarioData from "./usuarios.json";
+// import usuarioData from "./usuarios.json";
 
 export default function DefaultInputsModifAnadirUsuarios() {
   

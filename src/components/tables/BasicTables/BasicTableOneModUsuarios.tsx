@@ -59,6 +59,12 @@ export default function BasicTableOneModUsuarios() {
   // });
 
   const { isOpen, openModal, closeModal } = useModal();
+  const {
+    isOpen: isOpen2,
+    openModal: openModal2,
+    closeModal: closeModal2,
+  } = useModal();
+
   const handleSave = () => {
     // Handle save logic here
     console.log("Saving changes...");
@@ -117,7 +123,15 @@ export default function BasicTableOneModUsuarios() {
   return (
     <>
       <div>
-        <Button className="my-4" size="sm">Añadir Usuario</Button>
+        <Button
+          className="my-4"
+          size="sm"
+          onClick={() => {
+            openModal2();
+          }}
+        >
+          Añadir Usuario
+        </Button>
       </div>
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
@@ -154,6 +168,12 @@ export default function BasicTableOneModUsuarios() {
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
                   Editar
+                </TableCell>
+                <TableCell
+                  isHeader
+                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  Eliminar
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -244,6 +264,44 @@ export default function BasicTableOneModUsuarios() {
                       Edit
                     </button>
                   </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    {/* {order.budget} */}
+                    <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
+                      <svg
+                        className="fill-current"
+                        width="18"
+                        height="18"
+                        viewBox="-48 0 512 512"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="m208 416c8.835938 0 16-7.164062 16-16v-128c0-8.835938-7.164062-16-16-16s-16 7.164062-16 16v128c0 8.835938 7.164062 16 16 16zm0 0"
+                          fill=""
+                        />
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="m272 416c8.835938 0 16-7.164062 16-16v-128c0-8.835938-7.164062-16-16-16s-16 7.164062-16 16v128c0 8.835938 7.164062 16 16 16zm0 0"
+                          fill=""
+                        />
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="m144 416c8.835938 0 16-7.164062 16-16v-128c0-8.835938-7.164062-16-16-16s-16 7.164062-16 16v128c0 8.835938 7.164062 16 16 16zm0 0"
+                          fill=""
+                        />
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="m368 64h-96v-48c0-8.835938-7.164062-16-16-16h-96c-8.835938 0-16 7.164062-16 16v48h-96c-26.5.027344-47.9726562 21.5-48 48v32c.0351562 20.316406 12.847656 38.417969 32 45.199219v274.800781c.027344 26.5 21.5 47.972656 48 48h256c26.5-.027344 47.972656-21.5 48-48v-274.800781c19.152344-6.78125 31.964844-24.882813 32-45.199219v-32c-.027344-26.5-21.5-47.972656-48-48zm-192-32h64v32h-64zm176 432c0 8.835938-7.164062 16-16 16h-256c-8.835938 0-16-7.164062-16-16v-272h288zm32-320c0 8.835938-7.164062 16-16 16h-320c-8.835938 0-16-7.164062-16-16v-32c0-8.835938 7.164062-16 16-16h320c8.835938 0 16 7.164062 16 16zm0 0"
+                          fill=""
+                        />
+                      </svg>
+                    </button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -251,6 +309,8 @@ export default function BasicTableOneModUsuarios() {
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
+        {" "}
+        {/*Primer Modal*/}
         <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
           <ComponentCard title="Datos">
             <div className="space-y-6">
@@ -351,7 +411,103 @@ export default function BasicTableOneModUsuarios() {
               </div>
 
               <Button size="md" onClick={handleSave}>
-                Enviar
+                Guardar
+              </Button>
+            </div>
+          </ComponentCard>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isOpen2}
+        onClose={closeModal2}
+        className="max-w-[700px] m-4"
+      >
+        {" "}
+        {/*Segundo Modal*/}
+        <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
+          <ComponentCard title="Datos">
+            <div className="space-y-6">
+              <div>
+                <Label htmlFor="inputOne">Nombre Completo</Label>
+                <Input type="text" id="inputOne" placeholder="Paco de Lucia" />
+              </div>
+
+              <div>
+                <Label>Email</Label>
+                <div className="relative">
+                  <Input
+                    placeholder="info@gmail.com"
+                    type="text"
+                    className="pl-[62px]"
+                  />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                    <EnvelopeIcon className="size-6" />
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <Label>Contraseña</Label>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder=""
+                  />
+                  <button
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                  >
+                    {showPassword ? (
+                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    ) : (
+                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="inputTwo">Ubicacion</Label>
+                <Input
+                  type="text"
+                  id="inputTwo"
+                  placeholder="Nombre de la Cocina"
+                />
+              </div>
+
+              <div>
+                <Label>Rol</Label>
+                <Select
+                  options={optionsRol}
+                  onChange={(selectedOption) =>
+                    handleSelectChange(
+                      selectedOption ? selectedOption.value : "",
+                      "rol"
+                    )
+                  }
+                  placeholder="Selecciona una opcion"
+                  className="dark:bg-dark-900"
+                />
+              </div>
+
+              <div>
+                <Label>Estado</Label>
+                <Select
+                  options={optionsEstado}
+                  onChange={(selectedOption) =>
+                    handleSelectChange(
+                      selectedOption ? selectedOption.value : "",
+                      "estado"
+                    )
+                  }
+                  placeholder="Selecciona una opcion"
+                  className="dark:bg-dark-900"
+                />
+              </div>
+
+              <Button size="md" onClick={handleSave}>
+                Guardar
               </Button>
             </div>
           </ComponentCard>
