@@ -6,7 +6,7 @@ import Select from "../Select";
 import PhoneInput from "../group-input/PhoneInput";
 import { EnvelopeIcon } from "../../../icons";
 
-import DatePicker from "../date-picker.tsx";
+// import DatePicker from "../date-picker.tsx";
 import Button from "../../ui/button/Button.tsx";
 
 export default function DefaultInputsModif() {
@@ -43,8 +43,18 @@ export default function DefaultInputsModif() {
     <ComponentCard title="Datos">
       <div className="space-y-6">
         <div>
-          <Label htmlFor="inputTwo">Nombre Completo</Label>
-          <Input type="text" id="inputTwo" placeholder="Paco de Lucia" />
+          <Label htmlFor="inputOne">Empresa</Label>
+          <Input type="text" id="inputOne" placeholder="Paco de Lucia" />
+        </div>
+
+        <div>
+          <Label htmlFor="inputTwo">Direccion</Label>
+          <Input type="text" id="inputTwo" placeholder="Calle Tarragona 555" />
+        </div>
+
+        <div>
+          <Label htmlFor="inputThree">Codigo Postal</Label>
+          <Input type="text" id="inputThree" placeholder="43101" />
         </div>
 
         <div>
@@ -57,15 +67,10 @@ export default function DefaultInputsModif() {
           />
         </div>
 
-        <div>
-          <Label htmlFor="inputTwo">Direccion</Label>
-          <Input type="text" id="inputTwo" placeholder="Calle Tarragona 555" />
-        </div>
-
-        <div>
+        {/* <div>
           <Label htmlFor="inputTwo">NIF</Label>
           <Input type="text" id="inputTwo" placeholder="Y66688855M" />
-        </div>
+        </div> */}
 
         <div>
           <Label>Telefono</Label>
@@ -91,7 +96,7 @@ export default function DefaultInputsModif() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <DatePicker
             id="date-picker"
             label="Fecha de Alta"
@@ -101,7 +106,7 @@ export default function DefaultInputsModif() {
               console.log({ dates, currentDateString });
             }}
           />
-        </div>
+        </div> */}
 
         <div>
           <Label>Sector</Label>
