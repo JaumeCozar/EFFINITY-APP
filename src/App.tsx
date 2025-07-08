@@ -37,6 +37,9 @@ export default function App() {
             <Route path="/registro-cocina" element={<FormElementsModifCocina />} />
             <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
             <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
+            <Route path="/registro-comida" element={<FormElementsModif />} />
+            <Route path="/bar-chart" element={<BarChart />} />
+            <Route path="/line-chart" element={<LineChart />} />
           </Route>
         </Route>
 
@@ -45,7 +48,6 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/comercial/dashboard" element={<ComercialDashboard />} />
             <Route path="/registro-comida" element={<FormElementsModif />} />
-            <Route path="/calendar" element={<Calendar />} />
             <Route path="/bar-chart" element={<BarChart />} />
           </Route>
         </Route>
@@ -54,8 +56,6 @@ export default function App() {
         <Route element={<ProtectedRoute allowedRoles={["operario"]} />}>
           <Route element={<AppLayout />}>
             <Route path="/operario/dashboard" element={<OperarioDashboard />} />
-            <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/basic-tables" element={<BasicTables />} />
             <Route path="/line-chart" element={<LineChart />} />
           </Route>
         </Route>
@@ -64,6 +64,9 @@ export default function App() {
         <Route element={<ProtectedRoute allowedRoles={["admin", "comercial", "operario"]} />}>
           <Route element={<AppLayout />}>
             <Route index path="/" element={<Home />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/basic-tables" element={<BasicTables />} />
           </Route>
         </Route>
       </Routes>
