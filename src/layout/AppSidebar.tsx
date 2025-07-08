@@ -54,10 +54,12 @@ const navItems: NavItem[] = [
   },
   // { name: "Form Elements", path: "/form-elements", pro: false }, PARA HABILITAR FORM-ELEMENTS(AHORA REGISTRO)
   {
-    name: "Tables",
+    name: "Tablas",
     icon: <TableIcon />,
     subItems: [
-              { name: "Usuarios", path: "/table-usuarios", pro: false }
+              { name: "Usuarios", path: "/table-usuarios", pro: false },
+              { name: "Cocinas", path: "/table-cocinas", pro: false },
+              { name: "CocinasV2", path: "/table-cocinasv2", pro: false }
     ],
   },
 //{ name: "Basic Tables", path: "/basic-tables", pro: false },

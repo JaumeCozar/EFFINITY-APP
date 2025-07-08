@@ -1,4 +1,3 @@
-// import { useState} from "react";
 import { useState, useEffect } from "react";
 import { useModal } from "../../../hooks/useModal";
 import { Modal } from "../../ui/modal";
@@ -20,44 +19,8 @@ import usuarioData from "../../../components/form/form-elements/usuarios.json";
 
 import Badge from "../../ui/badge/Badge";
 
-// interface Order {
-//   id: number;
-//   user: {
-//     image: string;
-//     name: string;
-//     role: string;
-//   };
-//   projectName: string;
-//   team: {
-//     images: string[];
-//   };
-//   status: string;
-//   budget: string;
-// }
-
-// interface User {
-//   id: number;
-//   image: string;
-//   nombre: string;
-//   email: string;
-//   contrasena: string;
-//   rol: string;
-//   estado: string;
-//   ubicacion: string;
-// }
-
 export default function BasicTableOneModUsuarios() {
-  // const [formData, setFormData] = useState({
-  //   id: "",
-  //   image: "",
-  //   nombre: "",
-  //   email: "",
-  //   contrasena: "",
-  //   rol: "",
-  //   estado: "",
-  //   ubicacion: ""
-  // });
-
+  
   const { isOpen, openModal, closeModal } = useModal();
   const {
     isOpen: isOpen2,
@@ -66,7 +29,7 @@ export default function BasicTableOneModUsuarios() {
   } = useModal();
 
   const handleSave = () => {
-    // Handle save logic here
+
     console.log("Saving changes...");
     closeModal();
   };
@@ -151,12 +114,7 @@ export default function BasicTableOneModUsuarios() {
                 >
                   Cocina
                 </TableCell>
-                {/* <TableCell
-                isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                Equipo
-              </TableCell> */}
+                
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -205,24 +163,7 @@ export default function BasicTableOneModUsuarios() {
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {user.ubicacion}
                   </TableCell>
-                  {/* <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  <div className="flex -space-x-2">
-                    {order.team.images.map((teamImage, index) => (
-                      <div
-                        key={index}
-                        className="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
-                      >
-                        <img
-                          width={24}
-                          height={24}
-                          src={teamImage}
-                          alt={`Team member ${index + 1}`}
-                          className="w-full size-6"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </TableCell> */}
+        
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <Badge
                       size="sm"
@@ -378,7 +319,7 @@ export default function BasicTableOneModUsuarios() {
                     optionsRol.find(
                       (option) => option.value === formData.rol
                     ) || null
-                  } // Asegúrate de que sea null si no se encuentra
+                  } 
                   onChange={(selectedOption) =>
                     handleSelectChange(
                       selectedOption ? selectedOption.value : "",
@@ -398,7 +339,7 @@ export default function BasicTableOneModUsuarios() {
                     optionsEstado.find(
                       (option) => option.value === formData.estado
                     ) || null
-                  } // Asegúrate de que sea null si no se encuentra
+                  }
                   onChange={(selectedOption) =>
                     handleSelectChange(
                       selectedOption ? selectedOption.value : "",
