@@ -1,20 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/AuthPages/SignIn";
-// import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
+import Unauthorized from "./pages/OtherPage/Unauthorized";
 import UserProfiles from "./pages/UserProfiles";
-// import Videos from "./pages/UiElements/Videos";
-// import Images from "./pages/UiElements/Images";
-// import Alerts from "./pages/UiElements/Alerts";
-// import Badges from "./pages/UiElements/Badges";
-// import Avatars from "./pages/UiElements/Avatars";
-// import Buttons from "./pages/UiElements/Buttons";
 import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
 import Calendar from "./pages/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
-// import FormElements from "./pages/Forms/FormElements";
-// import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
@@ -26,48 +18,56 @@ import AdminDashboard from "./pages/user_admin/dashboard/AdminDashboard";
 import ComercialDashboard from "./pages/user_comercial/dashboard/ComercialDashboard";
 import OperarioDashboard from "./pages/user_operario/dashboard/OperarioDashboard";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
       <Routes>
-        {/* ✅ Rutas públicas */}
+        {/* Public routes */}
         <Route path="/signin" element={<SignIn />} />
-        {/* <Route path="/signup" element={<SignUp />} /> */}
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<NotFound />} />
 
-        {/* 🔒 Rutas protegidas con AppLayout */}
-        <Route
-          element={
-            <ProtectedRoute>
-              <AppLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index path="/" element={<Home />} />
-          <Route path="/profile" element={<UserProfiles />} />
-          <Route path="/calendar" element={<Calendar />} />
+        {/* Protected: ADMIN */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+          <Route element={<AppLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/registro-empresa" element={<FormElementsModif />} />
+            <Route path="/registro-cocina" element={<FormElementsModifCocina />} />
+            <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
+            <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
+          </Route>
+        </Route>
 
-          {/* Forms */}
-          <Route path="/registro-empresa" element={<FormElementsModif />} />
-          <Route path="/registro-cocina" element={<FormElementsModifCocina />} />
-          <Route path="/registro-comida" element={<FormElementsModif />} />
-          <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
+        {/* Protected: COMERCIAL */}
+        <Route element={<ProtectedRoute allowedRoles={["comercial"]} />}>
+          <Route element={<AppLayout />}>
+            <Route path="/comercial/dashboard" element={<ComercialDashboard />} />
+            <Route path="/registro-comida" element={<FormElementsModif />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/bar-chart" element={<BarChart />} />
+          </Route>
+        </Route>
 
-          {/* Tables */}
-          <Route path="/basic-tables" element={<BasicTables />} />
-          <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
+        {/* Protected: OPERARIO */}
+        <Route element={<ProtectedRoute allowedRoles={["operario"]} />}>
+          <Route element={<AppLayout />}>
+            <Route path="/operario/dashboard" element={<OperarioDashboard />} />
+            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/basic-tables" element={<BasicTables />} />
+            <Route path="/line-chart" element={<LineChart />} />
+          </Route>
+        </Route>
 
-          {/* Charts */}
-          <Route path="/line-chart" element={<LineChart />} />
-          <Route path="/bar-chart" element={<BarChart />} />
-
-          {/* Dashboards por rol */}
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/comercial/dashboard" element={<ComercialDashboard />} />
-          <Route path="/operario/dashboard" element={<OperarioDashboard />} />
+        {/* Protected: compartido */}
+        <Route element={<ProtectedRoute allowedRoles={["admin", "comercial", "operario"]} />}>
+          <Route element={<AppLayout />}>
+            <Route index path="/" element={<Home />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
   );
 }
+
