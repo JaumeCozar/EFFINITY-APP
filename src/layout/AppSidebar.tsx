@@ -60,6 +60,10 @@ const navItems: NavItem[] = [
               { name: "Usuarios", path: "/table-usuarios", pro: false }
     ],
   },
+//{ name: "Basic Tables", path: "/basic-tables", pro: false },
+
+
+
   // {
   //   name: "Pages",
   //   icon: <PageIcon />,
