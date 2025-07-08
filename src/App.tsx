@@ -26,6 +26,7 @@ import AdminDashboard from "./pages/user_admin/dashboard/AdminDashboard";
 import ComercialDashboard from "./pages/user_comercial/dashboard/ComercialDashboard";
 import OperarioDashboard from "./pages/user_operario/dashboard/OperarioDashboard";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import BasicTables from "./pages/Tables/BasicTables";
 export default function App() {
   return (
     <Router>
@@ -55,7 +56,7 @@ export default function App() {
           <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
 
           {/* Tables */}
-          {/* <Route path="/basic-tables" element={<BasicTables />} /> */}
+          <Route path="/basic-tables" element={<BasicTables />} />
           <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
 
           {/* Charts */}
