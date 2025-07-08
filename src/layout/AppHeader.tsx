@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Link } from "react-router";
+import { Link, useNavigate  } from "react-router-dom";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
@@ -10,6 +10,8 @@ const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const navigate = useNavigate();
+
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -83,7 +85,25 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <Link to="/" className="lg:hidden">
+          <button
+            onClick={() => {
+              const role = localStorage.getItem("role");
+              switch (role) {
+                case "admin":
+                  navigate("/admin/dashboard");
+                  break;
+                case "comercial":
+                  navigate("/comercial/dashboard");
+                  break;
+                case "operario":
+                  navigate("/operario/dashboard");
+                  break;
+                default:
+                  navigate("/signin");
+              }
+            }}
+            className="lg:hidden"
+          >
             <img
               className="dark:hidden"
               src="./images/logo/logo_horizontal_transp_black_mobile.png"
@@ -94,7 +114,8 @@ const AppHeader: React.FC = () => {
               src="./images/logo/logo_horizontal_transp_mobile.png"
               alt="Logo"
             />
-          </Link>
+          </button>
+
 
           <button
             onClick={toggleApplicationMenu}
