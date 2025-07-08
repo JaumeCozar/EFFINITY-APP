@@ -28,12 +28,12 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
-    name: "Dashboard",
+    name: " Panel de control",
     subItems: [{ name: "Ecommerce", path: "/", pro: false }],
   },
   {
     icon: <CalenderIcon />,
-    name: "Calendar",
+    name: "Calendario",
     path: "/calendar",
   },
   {
@@ -54,9 +54,9 @@ const navItems: NavItem[] = [
   },
   // { name: "Form Elements", path: "/form-elements", pro: false }, PARA HABILITAR FORM-ELEMENTS(AHORA REGISTRO)
   {
-    name: "Tables",
+    name: "Tablas",
     icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false },
+    subItems: [{ name: "Tablas básicas", path: "/basic-tables", pro: false },
               { name: "Usuarios", path: "/table-usuarios", pro: false }
     ],
   },
@@ -73,10 +73,10 @@ const navItems: NavItem[] = [
 const othersItems: NavItem[] = [
   {
     icon: <PieChartIcon />,
-    name: "Charts",
+    name: "Gráficas ",
     subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
+      { name: "Gráficas de líneas", path: "/line-chart", pro: false },
+      { name: "Gráficas de barras", path: "/bar-chart", pro: false },
     ],
   },
   // {
