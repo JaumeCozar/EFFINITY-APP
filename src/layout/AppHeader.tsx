@@ -85,25 +85,7 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <button
-            onClick={() => {
-              const role = localStorage.getItem("role");
-              switch (role) {
-                case "admin":
-                  navigate("/admin/dashboard");
-                  break;
-                case "comercial":
-                  navigate("/comercial/dashboard");
-                  break;
-                case "operario":
-                  navigate("/operario/dashboard");
-                  break;
-                default:
-                  navigate("/signin");
-              }
-            }}
-            className="lg:hidden"
-          >
+          <Link to="/" className="lg:hidden">
             <img
               className="dark:hidden"
               src="./images/logo/logo_horizontal_transp_black_mobile.png"
@@ -114,7 +96,7 @@ const AppHeader: React.FC = () => {
               src="./images/logo/logo_horizontal_transp_mobile.png"
               alt="Logo"
             />
-          </button>
+          </Link>
 
 
           <button
