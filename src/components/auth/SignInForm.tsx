@@ -7,6 +7,7 @@ import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext"; // ✅ Importamos el contexto
+import { DASHBOARD_ROUTES } from "../../routes/routes";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,24 +48,13 @@ export default function SignInForm() {
         email,
       });
 
-      // ✅ Redirigimos según el rol
-      switch (role) {
-        case "admin":
-          navigate("/admin/dashboard");
-          break;
-        case "comercial":
-          navigate("/comercial/dashboard");
-          break;
-        case "operario":
-          navigate("/operario/dashboard");
-          break;
-        default:
-          navigate("/");
+        // Redirección según el rol usando rutas centralizadas
+        const route = DASHBOARD_ROUTES[role as keyof typeof DASHBOARD_ROUTES] || "/";
+        navigate(route);
+      } catch (err) {
+        alert("Email o contraseña incorrectos");
       }
-    } catch (err) {
-      alert("Email o contraseña incorrectos");
-    }
-  };
+    };
   
   // FIN Jordi 30/06/2025
   return (
