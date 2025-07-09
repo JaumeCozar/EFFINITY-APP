@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { useNavigate  } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
@@ -10,7 +10,6 @@ const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-  const navigate = useNavigate();
 
 
   const handleToggle = () => {
