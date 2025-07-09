@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "image": "/images/user/user-17.jpg",
+    "nombre": "Cocina Tarragona",
+    "ubicacion": "Calle Tarragona 555"
+  },
+  {
+    "id": "2",
+    "image": "/images/user/user-18.jpg",
+    "nombre": "Cocina Salou",
+    "ubicacion": "Calle Salou 555"
+  },
+  {
+    "id": "3",
+    "image": "/images/user/user-19.jpg",
+    "nombre": "Cocina Reus",
+    "ubicacion": "Calle Reus 555"
+  },
+  {
+    "id": "4",
+    "image": "/images/user/user-20.jpg",
+    "nombre": "Cocina Cambrils",
+    "ubicacion": "Calle Cambrils 555"
+  }
+]
