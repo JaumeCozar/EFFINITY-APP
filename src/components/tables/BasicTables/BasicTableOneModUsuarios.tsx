@@ -7,7 +7,6 @@ import Label from "../../form/Label";
 import Input from "../../../components/form/input/InputField";
 import Select from "react-select";
 import { EnvelopeIcon } from "../../../icons";
-import { EyeCloseIcon, EyeIcon } from "../../../icons";
 import usuarioData from "../../../components/form/form-elements/usuarios.json";
 
 import Badge from "../../ui/badge/Badge";
@@ -53,8 +52,6 @@ export default function BasicTableOneModUsuarios() {
     console.log("Saving changes...");
     closeModal();
   };
-
-  const [showPassword, setShowPassword] = useState(false);
 
   // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
@@ -279,6 +276,7 @@ export default function BasicTableOneModUsuarios() {
                 </div>
               </div>
 
+              {/*
               <div>
                 <Label>Contraseña</Label>
                 <div className="relative">
@@ -299,6 +297,7 @@ export default function BasicTableOneModUsuarios() {
                   </button>
                 </div>
               </div>
+              */}
 
               <div>
                 <Label htmlFor="inputTwo">Ubicacion</Label>
@@ -387,6 +386,7 @@ export default function BasicTableOneModUsuarios() {
                 </div>
               </div>
 
+              {/*
               <div>
                 <Label>Contraseña</Label>
                 <div className="relative">
@@ -406,6 +406,7 @@ export default function BasicTableOneModUsuarios() {
                   </button>
                 </div>
               </div>
+              */}
 
               <div>
                 <Label htmlFor="inputTwo">Ubicacion</Label>
