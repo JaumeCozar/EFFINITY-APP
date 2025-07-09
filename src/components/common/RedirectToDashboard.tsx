@@ -10,7 +10,7 @@ const RedirectToDashboard = () => {
     case "comercial":
       return <Navigate to={DASHBOARD_ROUTES.comercial} />;
     case "operario":
-      return <Navigate to={DASHBOARD_ROUTES.comercial} />;
+      return <Navigate to={DASHBOARD_ROUTES.operario} />;
     default:
       return <Navigate to={AUTH_ROUTES.signin} />;
   }
