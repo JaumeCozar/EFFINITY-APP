@@ -18,9 +18,14 @@ import AdminDashboard from "./pages/user_admin/dashboard/AdminDashboard";
 import ComercialDashboard from "./pages/user_comercial/dashboard/ComercialDashboard";
 import OperarioDashboard from "./pages/user_operario/dashboard/OperarioDashboard";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+<<<<<<< HEAD
 import { DASHBOARD_ROUTES, AUTH_ROUTES } from "./routes/routes"
 import RedirectToDashboard from "./components/common/RedirectToDashboard";
 
+=======
+import BasicTableOneModCocina from "./components/tables/BasicTables/BasicTableOneModCocina";
+import BasicTableOneModCocinaV2 from "./components/tables/BasicTables/BasicTableOneModCocinaV2";
+>>>>>>> f9bf1d03071e1ff6109482562dbcb6c109718cb0
 export default function App() {
   return (
     <Router>
@@ -40,6 +45,8 @@ export default function App() {
             <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
             <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
             <Route path="/registro-comida" element={<FormElementsModif />} />
+            <Route path="/table-cocinas" element={<BasicTableOneModCocina/>} />
+            <Route path="/table-cocinasv2" element={<BasicTableOneModCocinaV2/>} />
             <Route path="/bar-chart" element={<BarChart />} />
             <Route path="/line-chart" element={<LineChart />} />
           </Route>
