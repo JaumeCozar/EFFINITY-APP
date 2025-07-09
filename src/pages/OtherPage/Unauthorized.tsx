@@ -11,12 +11,24 @@ export default function Unauthorized() {
         ❌ No tienes permiso para acceder a esta página.
       </h1>
 
-      <Link
-        to="/"
-        className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-      >
-        Volver al inicio
-      </Link>
+      <div className="flex gap-4 justify-center flex-wrap">
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+        >
+          Volver al inicio
+        </Link>
+
+        {localStorage.getItem("token") && (
+          <Link
+            to="/signin"
+            className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+          >
+            Volver a iniciar sesión
+          </Link>
+        )}
+      </div>
+
     </div>
   );
 }
