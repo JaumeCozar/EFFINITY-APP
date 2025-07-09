@@ -3,7 +3,7 @@ import MonthlySalesChart from "../../components/ecommerce/MonthlySalesChart";
 import StatisticsChart from "../../components/ecommerce/StatisticsChart";
 import MonthlyTarget from "../../components/ecommerce/MonthlyTarget";
 import RecentOrders from "../../components/ecommerce/RecentOrders";
-// import DemographicCard from "../../components/ecommerce/DemographicCard";
+import DemographicCard from "../../components/ecommerce/DemographicCard";
 import PageMeta from "../../components/common/PageMeta";
 
 export default function Home() {
@@ -33,7 +33,14 @@ export default function Home() {
         </div> */}
 
         <div className="col-span-12 xl:col-span-7">
-          <RecentOrders />
+          <div className="flex flex-col xl:flex-row gap-6">
+            <div className="flex-1">
+              <RecentOrders />
+            </div>
+            <div className="flex-1 min-w-[320px]">
+              <DemographicCard />
+            </div>
+          </div>
         </div>
       </div>
     </>

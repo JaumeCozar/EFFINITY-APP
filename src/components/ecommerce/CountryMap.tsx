@@ -15,14 +15,15 @@ const CountryMap: React.FC<CountryMapProps> = ({ mapColor }) => {
       markerStyle={{
         initial: {
           fill: "#465FFF",
+          // @ts-expect-error La propiedad 'r' es válida para jvectormap aunque no esté en el tipo
           r: 4, // Custom radius for markers
-        } as any, // Type assertion to bypass strict CSS property checks
+        },
       }}
       markersSelectable={true}
       markers={[
         {
           latLng: [37.2580397, -104.657039],
-          name: "United States",
+          name: "Estados Unidos",
           style: {
             fill: "#465FFF",
             borderWidth: 1,
@@ -37,12 +38,12 @@ const CountryMap: React.FC<CountryMapProps> = ({ mapColor }) => {
         },
         {
           latLng: [53.613, -11.6368],
-          name: "United Kingdom",
+          name: "Reino Unido",
           style: { fill: "#465FFF", borderWidth: 1, borderColor: "white" },
         },
         {
           latLng: [-25.0304388, 115.2092761],
-          name: "Sweden",
+          name: "Suecia",
           style: {
             fill: "#465FFF",
             borderWidth: 1,

@@ -1,72 +1,109 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext"; // ✅ Importamos el contexto
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
-  // INI Jordi 30/06/2025
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
+  const { setUser } = useAuth(); // ✅ Obtenemos setUser del contexto
 
   const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post("http://localhost:8080/auth/login", {
-      email,
-      password,
-    });
-    console.log("asdf")
-    console.log(response)
-    const { token, role, userId, companyId, kitchenId, name } = response.data;
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        email,
+        password,
+      });
 
-    // Guarda todo en localStorage (puedes usar sessionStorage si prefieres)
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", role);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("companyId", companyId);
-    localStorage.setItem("kitchenId", kitchenId ?? ""); // si viene null
-    localStorage.setItem("name", name);
-    localStorage.setItem("email", email);
+      const { token, role, userId, companyId, kitchenId, name } = response.data;
 
-    // Redirige según el rol
-    switch (role) {
-      case "admin":
-        navigate("/admin/dashboard");
-        break;
-      case "comercial":
-        navigate("/comercial/dashboard");
-        break;
-      case "operario":
-        navigate("/operario/dashboard");
-        break;
-      default:
-        navigate("/");
+      // ✅ Guardamos en localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("companyId", companyId);
+      localStorage.setItem("kitchenId", kitchenId ?? "");
+      localStorage.setItem("name", name);
+      localStorage.setItem("email", email);
+
+      // ✅ Actualizamos el contexto (esto es lo que faltaba antes)
+      setUser({
+        token,
+        role,
+        userId,
+        companyId,
+        kitchenId,
+        name,
+        email,
+      });
+
+      // ✅ Redirigimos según el rol
+      switch (role) {
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "comercial":
+          navigate("/comercial/dashboard");
+          break;
+        case "operario":
+          navigate("/operario/dashboard");
+          break;
+        default:
+          navigate("/");
+      }
+    } catch (err) {
+      alert("Email o contraseña incorrectos");
     }
-  } catch (err) {
-    alert("Email o contraseña incorrectos");
-  }
-};
-
+  };
+  
   // FIN Jordi 30/06/2025
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
-        <Link
+        {/* <Link
           to="/"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
           Back to dashboard
-        </Link>
+        </Link> */}
+        {localStorage.getItem("token") && (
+
+          <button
+            onClick={() => {
+              const role = localStorage.getItem("role");
+              switch (role) {
+                case "admin":
+                  navigate("/admin/dashboard");
+                  break;
+                case "comercial":
+                  navigate("/comercial/dashboard");
+                  break;
+                case "operario":
+                  navigate("/operario/dashboard");
+                  break;
+                default:
+                  navigate("/signin");
+              }
+            }}
+            className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+          >
+            <ChevronLeftIcon className="size-5" />
+            Back to dashboard
+          </button>
+          
+        )}
+
       </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
