@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Assume these icons are imported from an icon library
 import {
@@ -57,7 +57,9 @@ const navItems: NavItem[] = [
     name: "Tablas",
     icon: <TableIcon />,
     subItems: [{ name: "Tablas básicas", path: "/basic-tables", pro: false },
-              { name: "Usuarios", path: "/table-usuarios", pro: false }
+              { name: "Usuarios", path: "/table-usuarios", pro: false },
+              { name: "Cocinas", path: "/table-cocinas", pro: false },
+              { name: "CocinasV2", path: "/table-cocinasv2", pro: false }
     ],
   },
 //{ name: "Basic Tables", path: "/basic-tables", pro: false },
@@ -108,7 +110,6 @@ const othersItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
-  const navigate = useNavigate();
 
 
   const [openSubmenu, setOpenSubmenu] = useState<{
@@ -318,25 +319,7 @@ const AppSidebar: React.FC = () => {
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-        <button
-          onClick={() => {
-            const role = localStorage.getItem("role");
-            switch (role) {
-              case "admin":
-                navigate("/admin/dashboard");
-                break;
-              case "comercial":
-                navigate("/comercial/dashboard");
-                break;
-              case "operario":
-                navigate("/operario/dashboard");
-                break;
-              default:
-                navigate("/signin");
-            }
-          }}
-          className="focus:outline-none"
-        >
+        <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
@@ -356,23 +339,23 @@ const AppSidebar: React.FC = () => {
             </>
           ) : (
             <>
-              <img
-                className="dark:hidden"
-                src="/images/logo/logo_horizontal_transp_black_ico.png"
-                alt="Logo"
-                width={32}
-                height={32}
-              />
-              <img
-                className="hidden dark:block"
-                src="/images/logo/logo_horizontal_transp_ico.png"
-                alt="Logo"
-                width={32}
-                height={32}
-              />
+            <img
+              className="dark:hidden"
+              src="/images/logo/logo_horizontal_transp_black_ico.png"
+              alt="Logo"
+              width={32}
+              height={32}
+            />
+            <img
+              className="hidden dark:block"
+              src="/images/logo/logo_horizontal_transp_ico.png"
+              alt="Logo"
+              width={32}
+              height={32}
+            />
             </>
           )}
-        </button>
+        </Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">

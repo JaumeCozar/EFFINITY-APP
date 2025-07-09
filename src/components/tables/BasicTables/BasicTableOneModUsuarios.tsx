@@ -1,4 +1,3 @@
-// import { useState} from "react";
 import { useState, useEffect } from "react";
 import { useModal } from "../../../hooks/useModal";
 import { Modal } from "../../ui/modal";
@@ -41,17 +40,7 @@ interface User {
 }
 
 export default function BasicTableOneModUsuarios() {
-  // const [formData, setFormData] = useState({
-  //   id: "",
-  //   image: "",
-  //   nombre: "",
-  //   email: "",
-  //   contrasena: "",
-  //   rol: "",
-  //   estado: "",
-  //   ubicacion: ""
-  // });
-
+  
   const { isOpen, openModal, closeModal } = useModal();
   const {
     isOpen: isOpen2,
@@ -60,7 +49,7 @@ export default function BasicTableOneModUsuarios() {
   } = useModal();
 
   const handleSave = () => {
-    // Handle save logic here
+
     console.log("Saving changes...");
     closeModal();
   };
@@ -329,7 +318,7 @@ export default function BasicTableOneModUsuarios() {
                     optionsRol.find(
                       (option) => option.value === formData.rol
                     ) || null
-                  } // Asegúrate de que sea null si no se encuentra
+                  } 
                   onChange={(selectedOption) =>
                     handleSelectChange(
                       selectedOption ? selectedOption.value : "",
@@ -349,7 +338,7 @@ export default function BasicTableOneModUsuarios() {
                     optionsEstado.find(
                       (option) => option.value === formData.estado
                     ) || null
-                  } // Asegúrate de que sea null si no se encuentra
+                  }
                   onChange={(selectedOption) =>
                     handleSelectChange(
                       selectedOption ? selectedOption.value : "",
