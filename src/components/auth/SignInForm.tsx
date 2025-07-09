@@ -70,37 +70,16 @@ export default function SignInForm() {
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
-        {/* <Link
+        
+        {localStorage.getItem("token") && (
+
+          <Link
           to="/"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
           Back to dashboard
-        </Link> */}
-        {localStorage.getItem("token") && (
-
-          <button
-            onClick={() => {
-              const role = localStorage.getItem("role");
-              switch (role) {
-                case "admin":
-                  navigate("/admin/dashboard");
-                  break;
-                case "comercial":
-                  navigate("/comercial/dashboard");
-                  break;
-                case "operario":
-                  navigate("/operario/dashboard");
-                  break;
-                default:
-                  navigate("/signin");
-              }
-            }}
-            className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-          >
-            <ChevronLeftIcon className="size-5" />
-            Back to dashboard
-          </button>
+        </Link>
           
         )}
 

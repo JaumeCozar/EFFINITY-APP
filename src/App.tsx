@@ -18,6 +18,8 @@ import AdminDashboard from "./pages/user_admin/dashboard/AdminDashboard";
 import ComercialDashboard from "./pages/user_comercial/dashboard/ComercialDashboard";
 import OperarioDashboard from "./pages/user_operario/dashboard/OperarioDashboard";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import { DASHBOARD_ROUTES, AUTH_ROUTES } from "./routes/routes"
+import RedirectToDashboard from "./components/common/RedirectToDashboard";
 
 export default function App() {
   return (
@@ -25,14 +27,14 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         {/* Public routes */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path={AUTH_ROUTES.signin} element={<SignIn />} />
+        <Route path={AUTH_ROUTES.unauthorized} element={<Unauthorized />} />
         <Route path="*" element={<NotFound />} />
 
         {/* Protected: ADMIN */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route element={<AppLayout />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path={DASHBOARD_ROUTES.admin} element={<AdminDashboard />} />
             <Route path="/registro-empresa" element={<FormElementsModif />} />
             <Route path="/registro-cocina" element={<FormElementsModifCocina />} />
             <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
@@ -46,7 +48,7 @@ export default function App() {
         {/* Protected: COMERCIAL */}
         <Route element={<ProtectedRoute allowedRoles={["comercial"]} />}>
           <Route element={<AppLayout />}>
-            <Route path="/comercial/dashboard" element={<ComercialDashboard />} />
+            <Route path={DASHBOARD_ROUTES.comercial} element={<ComercialDashboard />} />
             <Route path="/registro-comida" element={<FormElementsModif />} />
             <Route path="/bar-chart" element={<BarChart />} />
           </Route>
@@ -55,7 +57,7 @@ export default function App() {
         {/* Protected: OPERARIO */}
         <Route element={<ProtectedRoute allowedRoles={["operario"]} />}>
           <Route element={<AppLayout />}>
-            <Route path="/operario/dashboard" element={<OperarioDashboard />} />
+            <Route path={DASHBOARD_ROUTES.operario} element={<OperarioDashboard />} />
             <Route path="/line-chart" element={<LineChart />} />
           </Route>
         </Route>
@@ -63,7 +65,7 @@ export default function App() {
         {/* Protected: compartido */}
         <Route element={<ProtectedRoute allowedRoles={["admin", "comercial", "operario"]} />}>
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Home />} />
+            <Route index path="/" element={<RedirectToDashboard />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/basic-tables" element={<BasicTables />} />
