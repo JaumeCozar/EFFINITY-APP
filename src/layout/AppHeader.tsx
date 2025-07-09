@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+<<<<<<< HEAD
+=======
+
+>>>>>>> d338cc8a56351fcc73fdc5969fce465080c9fa57
 import { Link } from "react-router-dom";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
@@ -9,6 +13,10 @@ const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+<<<<<<< HEAD
+=======
+
+>>>>>>> d338cc8a56351fcc73fdc5969fce465080c9fa57
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
