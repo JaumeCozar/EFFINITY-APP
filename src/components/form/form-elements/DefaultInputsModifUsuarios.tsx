@@ -4,14 +4,11 @@ import Label from "../Label";
 import Input from "../input/InputField";
 import Select from "react-select"; // Importar React Select
 import { EnvelopeIcon } from "../../../icons";
-import { EyeCloseIcon, EyeIcon} from "../../../icons";
 import Button from "../../ui/button/Button.tsx";
 import usuarioData from "./usuarios.json";
 
 export default function DefaultInputsModifUsuarios() {
   
-    const [showPassword, setShowPassword] = useState(false);
-
     // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
     nombre: "",
@@ -78,6 +75,7 @@ export default function DefaultInputsModifUsuarios() {
           </div>
         </div>
 
+        {/*
         <div>
           <Label>Contraseña</Label>
           <div className="relative">
@@ -98,6 +96,7 @@ export default function DefaultInputsModifUsuarios() {
             </button>
           </div>
         </div>
+        */}
 
         <div>
           <Label htmlFor="inputTwo">Ubicacion</Label>
