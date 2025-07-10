@@ -9,7 +9,6 @@ import Calendar from "./pages/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
 import FormElementsModif from "./pages/Forms/FormElementsModif";
 import FormElementsModifCocina from "./pages/Forms/FormElementsModifCocina";
 import FormElementsModifUsuarios from "./pages/Forms/FormElementsModifUsuarios";
@@ -20,7 +19,6 @@ import OperarioDashboard from "./pages/user_operario/dashboard/OperarioDashboard
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import { DASHBOARD_ROUTES, AUTH_ROUTES } from "./routes/routes"
 import RedirectToDashboard from "./components/common/RedirectToDashboard";
-import BasicTableOneModCocina from "./components/tables/BasicTables/BasicTableOneModCocina";
 import BasicTableOneModCocinaV2 from "./components/tables/BasicTables/BasicTableOneModCocinaV2";
 
 export default function App() {
@@ -42,8 +40,7 @@ export default function App() {
             <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
             <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
             <Route path="/registro-comida" element={<FormElementsModif />} />
-            <Route path="/table-cocinas" element={<BasicTableOneModCocina/>} />
-            <Route path="/table-cocinasv2" element={<BasicTableOneModCocinaV2/>} />
+            <Route path="/table-cocinas" element={<BasicTableOneModCocinaV2/>} />
             <Route path="/bar-chart" element={<BarChart />} />
             <Route path="/line-chart" element={<LineChart />} />
           </Route>

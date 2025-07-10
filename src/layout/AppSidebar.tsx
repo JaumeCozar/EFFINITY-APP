@@ -58,8 +58,7 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     subItems: [{ name: "Tablas básicas", path: "/basic-tables", pro: false },
               { name: "Usuarios", path: "/table-usuarios", pro: false },
-              { name: "Cocinas", path: "/table-cocinas", pro: false },
-              { name: "CocinasV2", path: "/table-cocinasv2", pro: false }
+              { name: "Cocinas", path: "/table-cocinas", pro: false }
     ],
   },
 //{ name: "Basic Tables", path: "/basic-tables", pro: false },
@@ -323,7 +322,7 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
-                className="hidden xl:block dark:hidden"
+                className="hidden lg:block dark:hidden"
                 src="/images/logo/logo_horizontal_transp_black.png"
                 alt="Logo"
                 width={150}

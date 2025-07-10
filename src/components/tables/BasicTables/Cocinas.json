@@ -2,25 +2,25 @@
   {
     "id": "1",
     "image": "/images/user/user-17.jpg",
-    "nombre": "Cocina Tarragona",
+    "nombre": "Tarragona",
     "ubicacion": "Calle Tarragona 555"
   },
   {
     "id": "2",
     "image": "/images/user/user-18.jpg",
-    "nombre": "Cocina Salou",
+    "nombre": "Salou",
     "ubicacion": "Calle Salou 555"
   },
   {
     "id": "3",
     "image": "/images/user/user-19.jpg",
-    "nombre": "Cocina Reus",
+    "nombre": "Reus",
     "ubicacion": "Calle Reus 555"
   },
   {
     "id": "4",
     "image": "/images/user/user-20.jpg",
-    "nombre": "Cocina Cambrils",
+    "nombre": "Cambrils",
     "ubicacion": "Calle Cambrils 555"
   }
 ]
