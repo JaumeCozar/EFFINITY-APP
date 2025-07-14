@@ -89,9 +89,9 @@ const handleDelete = () => {
 
   return (
     <>
-      <div className="flex justify-end">
+      <div className="flex justify-end mb-4">
         <Button
-          className="my-4 mx-6"
+          className="bg-blue-500 opacity-80 hover:bg-blue-600 text-white"
           size="sm"
           onClick={() => {
             openModal2();

@@ -1,10 +1,9 @@
 import EcommerceMetrics from "../../../components/ecommerce/EcommerceMetrics";
 import MonthlySalesChart from "../../../components/ecommerce/MonthlySalesChart";
-import StatisticsChart from "../../../components/ecommerce/StatisticsChart";
 import MonthlyTarget from "../../../components/ecommerce/MonthlyTarget";
-import RecentOrders from "../../../components/ecommerce/RecentOrders";
 import DemographicCard from "../../../components/ecommerce/DemographicCard";
 import PageMeta from "../../../components/common/PageMeta";
+import { MyBar } from "../../../components/ecommerce/NivoChart";
 
 export default function AdminDashboard() {
   return (
@@ -20,12 +19,19 @@ export default function AdminDashboard() {
           <MonthlySalesChart />
         </div>
 
+        {/* Nueva gráfica NivoBar: ahora ocupa toda la línea */}
+        <div className="col-span-12">
+          <div className="h-72 w-full">
+            <MyBar />
+          </div>
+        </div>
+
         <div className="col-span-12 xl:col-span-5">
           <MonthlyTarget />
         </div>
 
         <div className="col-span-12">
-          <StatisticsChart />
+          {/* Removed StatisticsChart */}
         </div>
 
         <div className="col-span-12 xl:col-span-5">
@@ -33,7 +39,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="col-span-12 xl:col-span-7">
-          <RecentOrders />
+          {/* <RecentOrders /> Eliminado porque el componente no existe */}
         </div>
       </div>
     </>
