@@ -12,11 +12,22 @@ import {
   TableHeader,
   TableRow,
 } from "../../ui/table";
-import usuarioData from "../../../components/form/form-elements/usuarios.json";
+import usuarioData from "./Alimentos.json";
+import Select from "react-select"; 
 
 // import Badge from "../../ui/badge/Badge";
 
 export default function BasicTableOneModCocina() {
+
+  const optionsOrder = [
+    { value: "Ascendente", label: "Ascendente" },
+    { value: "Descendente", label: "Descendente" },
+  ];
+
+  const handleSelectChange = (value: string, field: string) => {
+  console.log(`Campo: ${field}, Valor seleccionado: ${value}`);
+  // Aquí puedes actualizar el estado según el campo (rol o estado)
+};
   
   const { isOpen, openModal, closeModal } = useModal();
   const {
@@ -33,12 +44,9 @@ export default function BasicTableOneModCocina() {
 
   // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
+    image: "",
     nombre: "",
-    email: "",
-    contrasena: "",
-    rol: "",
-    estado: "",
-    ubicacion: "",
+    precio: "",
   });
 
   type User = (typeof usuarioData)[0];
@@ -48,27 +56,88 @@ export default function BasicTableOneModCocina() {
   useEffect(() => {
     if (selectedUser) {
       setFormData({
-        nombre: selectedUser.nombre,
-        email: selectedUser.email,
-        contrasena: selectedUser.contrasena,
-        rol: selectedUser.rol,
-        estado: selectedUser.estado,
-        ubicacion: selectedUser.ubicacion,
+        image: selectedUser.image,
+        nombre: selectedUser.nombre,        
+        precio: selectedUser.precio,
       });
     }
   }, [selectedUser]);
 
   return (
     <>
-      <div>
+      <div className="">
+        <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide">
+          <div className="flex-shrink-0 w-1/6"></div>
+
+          <button
+            id="item-1"
+            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          >
+            Mandarina
+          </button>
+          <button
+            id="item-2"
+            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          >
+            Pera
+          </button>
+          <button
+            id="item-3"
+            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          >
+            Manzana
+          </button>
+          <button
+            id="item-4"
+            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          >
+            Plátano
+          </button>
+          <button
+            id="item-5"
+            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          >
+            Uva
+          </button>
+          <button
+            id="item-6"
+            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          >
+            Kiwi
+          </button>
+
+          <div className="flex-shrink-0 w-1/3"></div>
+        </div>
+      </div>
+
+      <div className="flex flex-row gap-5 align-middle my-4">
+        <Input
+          type="text"
+          id="inputOne"
+          placeholder="Buscar"
+          className="dark:bg-dark-900 w-1/3"
+        />
+
+        <Select
+          options={optionsOrder}
+          onChange={(selectedOrder) =>
+            handleSelectChange(
+              selectedOrder ? selectedOrder.value : "",
+              "estado"
+            )
+          }
+          placeholder="Selecciona el orden"
+          className="dark:bg-dark-900 w-1/3"
+        />
+
         <Button
-          className="my-4"
+          className="w-1/3"
           size="sm"
           onClick={() => {
             openModal2();
           }}
         >
-          Añadir Cocina
+          Añadir Alimento
         </Button>
       </div>
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -77,21 +146,20 @@ export default function BasicTableOneModCocina() {
             {/* Table Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow>
-                
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Cocina
+                  Alimento
                 </TableCell>
-                
+
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Direccion
+                  Precio
                 </TableCell>
-                
+
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -111,15 +179,28 @@ export default function BasicTableOneModCocina() {
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {usuarioData.map((user, id) => (
                 <TableRow key={id}>
-                  
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {user.ubicacion}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 overflow-hidden rounded-full">
+                        <img
+                          width={40}
+                          height={40}
+                          src={user.image}
+                          alt={user.nombre}
+                        />
+                      </div>
+                      <div>
+                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                          {user.nombre}
+                        </span>
+                      </div>
+                    </div>
                   </TableCell>
 
-                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    Calle Tarragona 555
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {user.precio}€
                   </TableCell>
-        
+
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     {/* {order.budget} */}
                     <button
@@ -195,25 +276,25 @@ export default function BasicTableOneModCocina() {
         {" "}
         {/*Primer Modal*/}
         <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
-          <ComponentCard title="Editar Cocina">
+          <ComponentCard title="Editar Alimento">
             <div className="space-y-6">
               <div>
-                <Label htmlFor="inputOne">Nombre de la Cocina</Label>
+                <Label htmlFor="inputOne">Alimento</Label>
                 <Input
                   type="text"
                   id="inputOne"
-                  placeholder="Tarragona-Reus-Salou-etc..."
+                  placeholder="Manzana/Mandarina/Arandano..."
                   value={formData.nombre}
                 />
               </div>
 
               <div>
-                <Label htmlFor="inputTwo">Direccion</Label>
+                <Label htmlFor="inputTwo">Precio</Label>
                 <Input
                   type="text"
                   id="inputTwo"
-                  placeholder="Calle Tarragona 555"
-                  value={formData.ubicacion}
+                  placeholder="5.00€"
+                  value={formData.precio}
                 />
               </div>
 
@@ -233,20 +314,20 @@ export default function BasicTableOneModCocina() {
         {" "}
         {/*Segundo Modal*/}
         <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
-          <ComponentCard title="Añadir Cocina">
+          <ComponentCard title="Añadir Alimento">
             <div className="space-y-6">
               <div>
-                <Label htmlFor="inputOne">Nombre de la Cocina</Label>
-                <Input type="text" id="inputOne" placeholder="Tarragona-Reus-Salou-etc..." />
+                <Label htmlFor="inputOne">Alimento</Label>
+                <Input
+                  type="text"
+                  id="inputOne"
+                  placeholder="Manzana/Mandarina/Arandano..."
+                />
               </div>
 
               <div>
-                <Label htmlFor="inputTwo">Direccion</Label>
-                <Input
-                  type="text"
-                  id="inputTwo"
-                  placeholder="Calle Tarragona 555"
-                />
+                <Label htmlFor="inputTwo">Precio</Label>
+                <Input type="text" id="inputTwo" placeholder="5.00€" />
               </div>
 
               <Button size="md" onClick={handleSave}>

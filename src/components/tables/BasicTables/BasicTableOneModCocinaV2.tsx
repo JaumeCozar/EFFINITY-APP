@@ -89,9 +89,9 @@ const handleDelete = () => {
 
   return (
     <>
-      <div>
+      <div className="flex justify-end">
         <Button
-          className="my-4 mx-2"
+          className="my-4 mx-6"
           size="sm"
           onClick={() => {
             openModal2();

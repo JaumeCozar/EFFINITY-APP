@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "image": "/images/user/user-17.jpg",
+    "nombre": "Manzana",
+    "precio": "2.50"
+  },
+  {
+    "id": "2",
+    "image": "/images/user/user-18.jpg",
+    "nombre": "Piña",
+    "precio": "5.50"
+  },
+  {
+    "id": "3",
+    "image": "/images/user/user-19.jpg",
+    "nombre": "Tomate",
+    "precio": "1.50"
+  },
+  {
+    "id": "4",
+    "image": "/images/user/user-20.jpg",
+    "nombre": "Arandano",
+    "precio": "7.50"
+  }
+]
