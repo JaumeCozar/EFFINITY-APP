@@ -8,7 +8,7 @@ import Badge from "../ui/badge/Badge";
 
 export default function EcommerceMetrics() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+    <div className="grid grid-cols-2 gap-4 md:gap-6">
       {/* <!-- Inicio de Métrica --> */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
