@@ -20,6 +20,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import { DASHBOARD_ROUTES, AUTH_ROUTES } from "./routes/routes"
 import RedirectToDashboard from "./components/common/RedirectToDashboard";
 import BasicTableOneModCocinaV2 from "./components/tables/BasicTables/BasicTableOneModCocinaV2";
+import BasicTableOneModCocina from "./components/tables/BasicTables/BasicTableOneModCocina";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
             <Route path="/registro-comida" element={<FormElementsModif />} />
             <Route path="/table-cocinas" element={<BasicTableOneModCocinaV2/>} />
+            <Route path="/table-cocinasV1" element={<BasicTableOneModCocina/>} />
             <Route path="/bar-chart" element={<BarChart />} />
             <Route path="/line-chart" element={<LineChart />} />
           </Route>

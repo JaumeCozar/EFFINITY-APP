@@ -1,65 +1,14 @@
 [
-  {
-    "country": "AD",
-    "hot dog": 116,
-    "burger": 43,
-    "sandwich": 132,
-    "kebab": 55,
-    "fries": 39,
-    "donut": 70
-  },
-  {
-    "country": "AE",
-    "hot dog": 134,
-    "burger": 197,
-    "sandwich": 10,
-    "kebab": 25,
-    "fries": 182,
-    "donut": 117
-  },
-  {
-    "country": "AF",
-    "hot dog": 143,
-    "burger": 126,
-    "sandwich": 41,
-    "kebab": 72,
-    "fries": 73,
-    "donut": 77
-  },
-  {
-    "country": "AG",
-    "hot dog": 79,
-    "burger": 146,
-    "sandwich": 50,
-    "kebab": 102,
-    "fries": 5,
-    "donut": 169
-  },
-  {
-    "country": "AI",
-    "hot dog": 184,
-    "burger": 154,
-    "sandwich": 94,
-    "kebab": 107,
-    "fries": 182,
-    "donut": 96
-  },
-  {
-    "country": "AL",
-    "hot dog": 76,
-    "burger": 2,
-    "sandwich": 38,
-    "kebab": 26,
-    "fries": 182,
-    "donut": 1
-  },
-  {
-    "country": "AM",
-    "hot dog": 155,
-    "burger": 42,
-    "sandwich": 141,
-    "kebab": 12,
-    "fries": 12,
-    "donut": 32
-  }
+  { "month": "Enero", "hot dog": 116, "burger": 43, "sandwich": 132, "kebab": 55, "fries": 39, "donut": 70 },
+  { "month": "Febrero", "hot dog": 134, "burger": 197, "sandwich": 10, "kebab": 25, "fries": 182, "donut": 117 },
+  { "month": "Marzo", "hot dog": 143, "burger": 126, "sandwich": 41, "kebab": 72, "fries": 73, "donut": 77 },
+  { "month": "Abril", "hot dog": 79, "burger": 146, "sandwich": 50, "kebab": 102, "fries": 5, "donut": 169 },
+  { "month": "Mayo", "hot dog": 184, "burger": 154, "sandwich": 94, "kebab": 107, "fries": 182, "donut": 96 },
+  { "month": "Junio", "hot dog": 76, "burger": 2, "sandwich": 38, "kebab": 26, "fries": 182, "donut": 1 },
+  { "month": "Julio", "hot dog": 155, "burger": 42, "sandwich": 141, "kebab": 12, "fries": 12, "donut": 32 },
+  { "month": "Agosto", "hot dog": 120, "burger": 80, "sandwich": 60, "kebab": 90, "fries": 110, "donut": 50 },
+  { "month": "Septiembre", "hot dog": 100, "burger": 60, "sandwich": 80, "kebab": 70, "fries": 90, "donut": 40 },
+  { "month": "Octubre", "hot dog": 130, "burger": 100, "sandwich": 120, "kebab": 60, "fries": 100, "donut": 60 },
+  { "month": "Noviembre", "hot dog": 90, "burger": 70, "sandwich": 100, "kebab": 80, "fries": 60, "donut": 30 },
+  { "month": "Diciembre", "hot dog": 110, "burger": 90, "sandwich": 110, "kebab": 100, "fries": 120, "donut": 80 }
 ]
