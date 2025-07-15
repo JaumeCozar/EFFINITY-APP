@@ -14,10 +14,43 @@ import {
 } from "../../ui/table";
 import usuarioData from "./Alimentos.json";
 import Select from "react-select"; 
-
+import Swal from 'sweetalert2';
+import tipoAlimentoData from "./TiposDeAlimentos.json"
 // import Badge from "../../ui/badge/Badge";
 
 export default function BasicTableOneModCocina() {
+
+  const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 mx-2 rounded",
+        cancelButton: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded"
+      },
+      buttonsStyling: false
+    });
+
+  const handleDelete = () => {
+    swalWithBootstrapButtons.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        swalWithBootstrapButtons.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        //Añadir aqui la tostada cuando se clickee Cancelar
+      }
+    });
+  };
 
   const optionsOrder = [
     { value: "Ascendente", label: "Ascendente" },
@@ -65,50 +98,30 @@ export default function BasicTableOneModCocina() {
 
   return (
     <>
-      <div className="">
-        <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide">
-          <div className="flex-shrink-0 w-1/6"></div>
+      
 
-          <button
-            id="item-1"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Mandarina
-          </button>
-          <button
-            id="item-2"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Pera
-          </button>
-          <button
-            id="item-3"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Manzana
-          </button>
-          <button
-            id="item-4"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Plátano
-          </button>
-          <button
-            id="item-5"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Uva
-          </button>
-          <button
-            id="item-6"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Kiwi
-          </button>
+      <div className="flex flex-row flex-nowrap w-fit overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x">
+      {/* Espacio inicial para centrar */}
+      <div className="flex-shrink-0"></div>
+      
+      {tipoAlimentoData.map(item => (
+        <button
+          key={item.id}
+          id={item.id}
+          className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
+          onClick={() => {
+            // Opcional: lógica si quieres manejar clicks
+            console.log('Has clickeado:', item.nombre);
+          }}
+        >
+          {item.nombre}
+        </button>
+      ))}
 
-          <div className="flex-shrink-0 w-1/3"></div>
-        </div>
-      </div>
+      {/* Espacio final para centrar */}
+      <div className="flex-shrink-0"></div>
+    </div>
+
 
       <div className="flex flex-row gap-5 align-middle my-4">
         <Input
@@ -230,7 +243,9 @@ export default function BasicTableOneModCocina() {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     {/* {order.budget} */}
-                    <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
+                    <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                    onClick={handleDelete}>
+                    
                       <svg
                         className="fill-current"
                         width="18"

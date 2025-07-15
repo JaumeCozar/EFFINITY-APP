@@ -127,11 +127,7 @@ export default function BasicTableOneModUsuarios() {
       } else if (
         result.dismiss === Swal.DismissReason.cancel
       ) {
-        swalWithBootstrapButtons.fire({
-          title: "Cancelled",
-          text: "Your imaginary file is safe :)",
-          icon: "error"
-        });
+        //Añadir aqui la tostada cuando se clickee Cancelar
       }
     });
   };
