@@ -7,6 +7,7 @@ import Label from "../../form/Label";
 import Input from "../../../components/form/input/InputField";
 import cocinasData from "./Cocinas.json";
 import Swal from 'sweetalert2';
+import PageMeta from "../../common/PageMeta";
 
 
 
@@ -85,6 +86,10 @@ const handleDelete = () => {
 
   return (
     <>
+          <PageMeta
+        title="Tablas Cocinas | Effinity"
+        description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
+      />
       <div className="flex justify-end mb-4">
         <Button
           className="bg-blue-500 opacity-80 hover:bg-blue-600 text-white"

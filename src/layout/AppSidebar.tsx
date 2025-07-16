@@ -47,7 +47,7 @@ const navItems: NavItem[] = [
     subItems: [
               { name: "Empresa", path: "/registro-empresa", pro: false },
               { name: "Cocina", path: "/registro-cocina", pro: false },
-              { name: "Comida", path: "/registro-comida", pro: false },
+              // { name: "Comida", path: "/registro-comida", pro: false },
               { name: "Usuarios", path: "/registro-usuarios", pro: false }
 
     ],

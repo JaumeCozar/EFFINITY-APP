@@ -119,7 +119,7 @@ const Calendar: React.FC = () => {
   return (
     <>
       <PageMeta
-        title="Panel de Calendario React.js | TailAdmin - Plantilla de Panel de Administración Next.js"
+        title="Calendario | Effinity"
         description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
       />
       <div className="rounded-2xl border  border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">

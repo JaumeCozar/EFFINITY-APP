@@ -6,7 +6,7 @@ export default function FormElementsModifUsuarios() {
   return (
     <div>
       <PageMeta
-        title="React.js Form Elements Dashboard | TailAdmin - React.js Admin Dashboard Template"
+        title="Registro Usuarios | Effinity"
         description="This is React.js Form Elements  Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
       <PageBreadcrumb pageTitle="Registro" />
