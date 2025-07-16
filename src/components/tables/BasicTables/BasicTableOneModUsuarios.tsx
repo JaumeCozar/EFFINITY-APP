@@ -10,7 +10,7 @@ import { EnvelopeIcon } from "../../../icons";
 import usuarioData from "../../../components/form/form-elements/usuarios.json";
 import Swal from "sweetalert2";
 import Badge from "../../ui/badge/Badge";
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { ToastContainer, toast, Bounce } from "react-toastify";
 import PageMeta from "../../common/PageMeta";
 
 // interface Order {
@@ -109,31 +109,57 @@ export default function BasicTableOneModUsuarios() {
   });
 
   const handleDelete = () => {
-    swalWithBootstrapButtons.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        swalWithBootstrapButtons.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-      } else if (
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        toast.info("No se ha borrado el usuario");
-      }
-    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          toast.info("No se ha borrado el usuario");
+        }
+      });
   };
+
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
+  useEffect(() => {
+    const observer = setInterval(() => {
+      const current = localStorage.getItem('theme') || 'light';
+      setTheme(prev => (prev !== current ? current : prev));
+    }, 300); // actualiza cada 300ms
+
+    return () => clearInterval(observer);
+  }, []);
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+        transition={Bounce}
+      />
+
       <PageMeta
         title="Tablas Usuarios | Effinity"
         description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
