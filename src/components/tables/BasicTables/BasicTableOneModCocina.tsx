@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 import tipoAlimentoData from "./TiposDeAlimentos.json"
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 // import Badge from "../../ui/badge/Badge";
+import PageMeta from "../../common/PageMeta";
 
 export default function BasicTableOneModCocina() {
 
@@ -117,7 +118,10 @@ pauseOnHover
 
 transition={Bounce}
 />
-      
+       <PageMeta
+        title="Tablas Cocinas V1 | Effinity"
+        description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
+      />
       <div className="max-w-full overflow-x-auto">
   <div className="flex max-w-4xl overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x">
     {tipoAlimentoData.map((item) => (

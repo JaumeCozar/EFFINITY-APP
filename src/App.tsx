@@ -40,7 +40,7 @@ export default function App() {
             <Route path="/registro-cocina" element={<FormElementsModifCocina />} />
             <Route path="/registro-usuarios" element={<FormElementsModifUsuarios />} />
             <Route path="/table-usuarios" element={<BasicTableOneModUsuarios />} />
-            <Route path="/registro-comida" element={<FormElementsModif />} />
+            {/* <Route path="/registro-comida" element={<FormElementsModif />} /> */}
             <Route path="/table-cocinas" element={<BasicTableOneModCocinaV2/>} />
             <Route path="/table-cocinasV1" element={<BasicTableOneModCocina/>} />
             <Route path="/bar-chart" element={<BarChart />} />
