@@ -7,7 +7,7 @@ import Label from "../../form/Label";
 import Input from "../../../components/form/input/InputField";
 import cocinasData from "./Cocinas.json";
 import Swal from 'sweetalert2';
-
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 // import Badge from "../../ui/badge/Badge";
@@ -72,6 +72,7 @@ const handleDelete = () => {
     } else if (
       result.dismiss === Swal.DismissReason.cancel
     ) {
+       toast.info("No se ha borrado la cocina");
       //Añadir aqui la tostada cuando se clickee Cancelar
     }
   });
@@ -85,6 +86,21 @@ const handleDelete = () => {
 
   return (
     <>
+
+      <ToastContainer
+position="bottom-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+transition={Bounce}
+/>
+
       <div className="flex justify-end mb-4">
         <Button
           className="bg-blue-500 opacity-80 hover:bg-blue-600 text-white"

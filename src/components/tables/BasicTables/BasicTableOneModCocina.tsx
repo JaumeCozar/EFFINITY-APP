@@ -16,6 +16,7 @@ import usuarioData from "./Alimentos.json";
 import Select from "react-select"; 
 import Swal from 'sweetalert2';
 import tipoAlimentoData from "./TiposDeAlimentos.json"
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 // import Badge from "../../ui/badge/Badge";
 
 export default function BasicTableOneModCocina() {
@@ -47,6 +48,11 @@ export default function BasicTableOneModCocina() {
       } else if (
         result.dismiss === Swal.DismissReason.cancel
       ) {
+        toast.info("No se ha borrado el alimento",{
+  className: "bg-gray-500 text-white",             // fondo gris
+  progressClassName: "bg-yellow-300"               // barra amarilla
+});
+        
         //Añadir aqui la tostada cuando se clickee Cancelar
       }
     });
@@ -98,32 +104,39 @@ export default function BasicTableOneModCocina() {
 
   return (
     <>
+    <ToastContainer
+position="bottom-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+
+transition={Bounce}
+/>
       
-
-      <div className="flex flex-row flex-nowrap w-fit overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x">
-      {/* Espacio inicial para centrar */}
-      <div className="flex-shrink-0"></div>
-      
-      {tipoAlimentoData.map(item => (
-        <button
-          key={item.id}
-          id={item.id}
-          className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          onClick={() => {
-            // Opcional: lógica si quieres manejar clicks
-            console.log('Has clickeado:', item.nombre);
-          }}
-        >
-          {item.nombre}
-        </button>
-      ))}
-
-      {/* Espacio final para centrar */}
-      <div className="flex-shrink-0"></div>
-    </div>
+      <div className="max-w-full overflow-x-auto">
+  <div className="flex max-w-4xl overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x">
+    {tipoAlimentoData.map((item) => (
+      <button
+        key={item.id}
+        id={item.id}
+        className="snap-center snap-always px-4 py-2 rounded whitespace-nowrap text-sm bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:bg-brand-300"
+        onClick={() => {
+          console.log("Has clickeado:", item.nombre);
+        }}
+      >
+        {item.nombre}
+      </button>
+    ))}
+  </div>
+</div>
 
 
-      <div className="flex flex-row gap-5 align-middle my-4">
+      <div className="flex flex-row gap-5 align-middle my-4 max-w-full overflow-x-auto">
         <Input
           type="text"
           id="inputOne"
@@ -243,9 +256,10 @@ export default function BasicTableOneModCocina() {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     {/* {order.budget} */}
-                    <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
-                    onClick={handleDelete}>
-                    
+                    <button
+                      className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                      onClick={handleDelete}
+                    >
                       <svg
                         className="fill-current"
                         width="18"

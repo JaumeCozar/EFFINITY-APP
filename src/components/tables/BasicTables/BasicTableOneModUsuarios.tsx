@@ -10,6 +10,7 @@ import { EnvelopeIcon } from "../../../icons";
 import usuarioData from "../../../components/form/form-elements/usuarios.json";
 import Swal from 'sweetalert2';
 import Badge from "../../ui/badge/Badge";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 // interface Order {
 //   id: number;
@@ -127,13 +128,28 @@ export default function BasicTableOneModUsuarios() {
       } else if (
         result.dismiss === Swal.DismissReason.cancel
       ) {
-        //Añadir aqui la tostada cuando se clickee Cancelar
+        toast.info("No se ha borrado el usuario");
       }
     });
   };
 
   return (
     <>
+
+      <ToastContainer
+position="bottom-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+transition={Bounce}
+/>
+
       <div className="flex justify-end mb-4">
         <Button
           className="bg-blue-500 opacity-80 hover:bg-blue-600 text-white"
