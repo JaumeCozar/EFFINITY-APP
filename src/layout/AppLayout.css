@@ -1,0 +1,17 @@
+.layout-wrapper {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1160px;
+}
+
+@media (min-width: 1024px) {
+  .layout-wrapper {
+    width: calc(100vw - 290px); /* si tu sidebar ocupa 290px */
+    max-width: 1160px;
+  }
+}

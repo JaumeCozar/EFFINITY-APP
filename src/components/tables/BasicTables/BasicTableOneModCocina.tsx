@@ -172,7 +172,7 @@ export default function BasicTableOneModCocina() {
           </div>
         </div>
 
-        <div className="overflow-hidden w-full xl:max-w-screen-xl mx-auto box-border">
+        <div className="w-full">
           <div className="flex gap-5 my-4 max-w-full justify-around">
             <div className="flex-1">
               <Input
