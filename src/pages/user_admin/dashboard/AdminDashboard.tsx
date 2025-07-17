@@ -1,6 +1,5 @@
 import EcommerceMetrics from "../../../components/ecommerce/EcommerceMetrics";
 import MonthlySalesChart from "../../../components/ecommerce/MonthlySalesChart";
-import MonthlyTarget from "../../../components/ecommerce/MonthlyTarget";
 import DemographicCard from "../../../components/ecommerce/DemographicCard";
 import PageMeta from "../../../components/common/PageMeta";
 import { MyBar } from "../../../components/ecommerce/NivoChart";
@@ -27,7 +26,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="col-span-12 xl:col-span-5">
-          <MonthlyTarget />
+          {/* <MonthlyTarget /> */}
         </div>
 
         <div className="col-span-12">
