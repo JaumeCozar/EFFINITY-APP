@@ -8,8 +8,10 @@ import Input from "../../../components/form/input/InputField";
 import Select from "react-select";
 import { EnvelopeIcon } from "../../../icons";
 import usuarioData from "../../../components/form/form-elements/usuarios.json";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Badge from "../../ui/badge/Badge";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import PageMeta from "../../common/PageMeta";
 
 // interface Order {
 //   id: number;
@@ -39,7 +41,6 @@ interface User {
 }
 
 export default function BasicTableOneModUsuarios() {
-  
   const { isOpen, openModal, closeModal } = useModal();
   const {
     isOpen: isOpen2,
@@ -48,7 +49,6 @@ export default function BasicTableOneModUsuarios() {
   } = useModal();
 
   const handleSave = () => {
-
     console.log("Saving changes...");
     closeModal();
   };
@@ -98,46 +98,72 @@ export default function BasicTableOneModUsuarios() {
     }
   }, [selectedUser]);
 
-
-    
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
-      confirmButton: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 mx-2 rounded",
-      cancelButton: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded"
+      confirmButton:
+        "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 mx-2 rounded",
+      cancelButton:
+        "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded",
     },
-    buttonsStyling: false
+    buttonsStyling: false,
   });
-  
+
   const handleDelete = () => {
-    swalWithBootstrapButtons.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        swalWithBootstrapButtons.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-      } else if (
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        swalWithBootstrapButtons.fire({
-          title: "Cancelled",
-          text: "Your imaginary file is safe :)",
-          icon: "error"
-        });
-      }
-    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          toast.info("No se ha borrado el usuario");
+        }
+      });
   };
+
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
+  useEffect(() => {
+    const observer = setInterval(() => {
+      const current = localStorage.getItem('theme') || 'light';
+      setTheme(prev => (prev !== current ? current : prev));
+    }, 300); // actualiza cada 300ms
+
+    return () => clearInterval(observer);
+  }, []);
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+        transition={Bounce}
+      />
+
+      <PageMeta
+        title="Tablas Usuarios | Effinity"
+        description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
+      />
       <div className="flex justify-end mb-4">
         <Button
           className="bg-blue-500 opacity-80 hover:bg-blue-600 text-white"
@@ -356,7 +382,7 @@ export default function BasicTableOneModUsuarios() {
                     optionsRol.find(
                       (option) => option.value === formData.rol
                     ) || null
-                  } 
+                  }
                   onChange={(selectedOption) =>
                     handleSelectChange(
                       selectedOption ? selectedOption.value : "",

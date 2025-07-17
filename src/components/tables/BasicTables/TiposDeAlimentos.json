@@ -1,0 +1,20 @@
+[
+  { "id": "1",  "nombre": "Aceites y Grasas" },
+  { "id": "2",  "nombre": "Alimentos Vegetales" },
+  { "id": "3",  "nombre": "Bebidas" },
+  { "id": "4",  "nombre": "Carnes Blancas" },
+  { "id": "5",  "nombre": "Carnes Rojas" },
+  { "id": "6",  "nombre": "Cereales y Legumbres" },
+  { "id": "7",  "nombre": "Dulces y Postres" },
+  { "id": "8",  "nombre": "Frutas" },
+  { "id": "9",  "nombre": "Frutos Secos" },
+  { "id": "10", "nombre": "Huevos" },
+  { "id": "11", "nombre": "Lacteos" },
+  { "id": "12", "nombre": "Mermeladas y Conservas" },
+  { "id": "13", "nombre": "Pan y Repostería" },
+  { "id": "14", "nombre": "Pasta y Arroz" },
+  { "id": "15", "nombre": "Pescado y Marisco" },
+  { "id": "16", "nombre": "Quesos" },
+  { "id": "17", "nombre": "Salsas y Condimentos" },
+  { "id": "18", "nombre": "Verduras y Hortalizas" }
+]

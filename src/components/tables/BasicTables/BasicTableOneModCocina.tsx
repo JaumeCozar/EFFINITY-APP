@@ -13,11 +13,50 @@ import {
   TableRow,
 } from "../../ui/table";
 import usuarioData from "./Alimentos.json";
-import Select from "react-select"; 
-
+import Select from "react-select";
+import Swal from "sweetalert2";
+import tipoAlimentoData from "./TiposDeAlimentos.json";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 // import Badge from "../../ui/badge/Badge";
+import PageMeta from "../../common/PageMeta";
+
 
 export default function BasicTableOneModCocina() {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton:
+        "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 mx-2 rounded",
+      cancelButton:
+        "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded",
+    },
+    buttonsStyling: false,
+  });
+
+  const handleDelete = () => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          toast.info("No se ha borrado el alimento");
+          
+          //Añadir aqui la tostada cuando se clickee Cancelar
+        }
+      });
+  };
 
   const optionsOrder = [
     { value: "Ascendente", label: "Ascendente" },
@@ -25,10 +64,10 @@ export default function BasicTableOneModCocina() {
   ];
 
   const handleSelectChange = (value: string, field: string) => {
-  console.log(`Campo: ${field}, Valor seleccionado: ${value}`);
-  // Aquí puedes actualizar el estado según el campo (rol o estado)
-};
-  
+    console.log(`Campo: ${field}, Valor seleccionado: ${value}`);
+    // Aquí puedes actualizar el estado según el campo (rol o estado)
+  };
+
   const { isOpen, openModal, closeModal } = useModal();
   const {
     isOpen: isOpen2,
@@ -37,7 +76,6 @@ export default function BasicTableOneModCocina() {
   } = useModal();
 
   const handleSave = () => {
-
     console.log("Saving changes...");
     closeModal();
   };
@@ -57,89 +95,104 @@ export default function BasicTableOneModCocina() {
     if (selectedUser) {
       setFormData({
         image: selectedUser.image,
-        nombre: selectedUser.nombre,        
+        nombre: selectedUser.nombre,
         precio: selectedUser.precio,
       });
     }
   }, [selectedUser]);
 
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
+  useEffect(() => {
+    const observer = setInterval(() => {
+      const current = localStorage.getItem('theme') || 'light';
+      setTheme(prev => (prev !== current ? current : prev));
+    }, 300); // actualiza cada 300ms
+
+    return () => clearInterval(observer);
+  }, []);
+
   return (
     <>
-      <div className="">
-        <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide">
-          <div className="flex-shrink-0 w-1/6"></div>
-
-          <button
-            id="item-1"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Mandarina
-          </button>
-          <button
-            id="item-2"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Pera
-          </button>
-          <button
-            id="item-3"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Manzana
-          </button>
-          <button
-            id="item-4"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Plátano
-          </button>
-          <button
-            id="item-5"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Uva
-          </button>
-          <button
-            id="item-6"
-            className="snap-center snap-always flex-shrink-0 px-4 py-2 bg-orange-100 rounded whitespace-nowrap"
-          >
-            Kiwi
-          </button>
-
-          <div className="flex-shrink-0 w-1/3"></div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+        transition={Bounce}
+      />
+      <PageMeta
+        title="Tablas Cocinas V1 | Effinity"
+        description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
+      />
+      <div className="max-w-full overflow-x-auto">
+        <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x">
+          {tipoAlimentoData.map((item) => (
+            <button
+              key={item.id}
+              id={item.id}
+              className="snap-center snap-always px-4 py-2 rounded whitespace-nowrap text-sm bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:bg-brand-300"
+              onClick={() => {
+                console.log("Has clickeado:", item.nombre);
+              }}
+            >
+              {item.nombre}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="flex flex-row gap-5 align-middle my-4">
-        <Input
-          type="text"
-          id="inputOne"
-          placeholder="Buscar"
-          className="dark:bg-dark-900 w-1/3"
-        />
+      <div className="overflow-hidden">
+        <div className="flex gap-5 my-4 max-w-full justify-around overflow-x-auto">
+          <div className="w-1/3">
+            <Input
+              type="text"
+              id="inputOne"
+              placeholder="Buscar"
+              className="dark:bg-dark-900"
+            />
+          </div>
 
-        <Select
-          options={optionsOrder}
-          onChange={(selectedOrder) =>
-            handleSelectChange(
-              selectedOrder ? selectedOrder.value : "",
-              "estado"
-            )
-          }
-          placeholder="Selecciona el orden"
-          className="dark:bg-dark-900 w-1/3"
-        />
+          <div className="w-1/3">
+            <Select
+              options={optionsOrder}
+              onChange={(selectedOrder: { value: string; label: string } | null) =>
+  handleSelectChange(selectedOrder?.value || "", "estado")
+}
 
-        <Button
-          className="w-1/3"
-          size="sm"
-          onClick={() => {
-            openModal2();
-          }}
-        >
-          Añadir Alimento
-        </Button>
+              placeholder="Selecciona el orden"
+              className="dark:bg-dark-900"
+
+menuPortalTarget={document.body}
+        menuPosition="fixed"
+        styles={{
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
+
+            />
+          </div>
+
+          <div className="w-1/3">
+            <Button
+              className="w-full"
+              size="sm"
+              onClick={() => {
+                openModal2();
+              }}
+            >
+              Añadir Alimento
+            </Button>
+          </div>
+        </div>
       </div>
+
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
           <Table>
@@ -230,7 +283,10 @@ export default function BasicTableOneModCocina() {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     {/* {order.budget} */}
-                    <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
+                    <button
+                      className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                      onClick={handleDelete}
+                    >
                       <svg
                         className="fill-current"
                         width="18"
