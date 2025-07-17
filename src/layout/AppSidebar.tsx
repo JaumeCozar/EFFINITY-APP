@@ -331,7 +331,7 @@ const AppSidebar: React.FC = () => {
                 height={40}
               />
               <img
-                className="hidden dark:hidden xl:dark:block"
+                className="hidden dark:hidden lg:dark:block"
                 src="/images/logo/logo_horizontal_transp.png"
                 alt="Logo"
                 width={150}
