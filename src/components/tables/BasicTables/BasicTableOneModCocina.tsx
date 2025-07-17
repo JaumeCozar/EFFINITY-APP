@@ -14,11 +14,13 @@ import {
 } from "../../ui/table";
 import usuarioData from "./Alimentos.json";
 import Select from "react-select";
+import type { StylesConfig, GroupBase } from "react-select";
 import Swal from "sweetalert2";
 import tipoAlimentoData from "./TiposDeAlimentos.json";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 // import Badge from "../../ui/badge/Badge";
 import PageMeta from "../../common/PageMeta";
+import { useTheme } from "../../../context/ThemeContext";
 
 
 export default function BasicTableOneModCocina() {
@@ -101,17 +103,37 @@ export default function BasicTableOneModCocina() {
     }
   }, [selectedUser]);
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const { theme } = useTheme();
 
-  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
-  useEffect(() => {
-    const observer = setInterval(() => {
-      const current = localStorage.getItem('theme') || 'light';
-      setTheme(prev => (prev !== current ? current : prev));
-    }, 300); // actualiza cada 300ms
+  // Define el tipo de opción para el select
+  type OptionType = { value: string; label: string };
 
-    return () => clearInterval(observer);
-  }, []);
+  const customSelectStylesDark: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "transparent",
+      color: "#fff",
+      borderColor: "#374151", // gray-700
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#1f2937",
+      color: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#374151" : "#1f2937",
+      color: "#fff",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#fff",
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: "#fff",
+    }),
+  };
 
   return (
     <>
@@ -133,8 +155,8 @@ export default function BasicTableOneModCocina() {
         description="Esta es la página de Panel de Calendario React.js para TailAdmin - Plantilla de Panel de Administración React.js Tailwind CSS"
       />
       <div className="overflow-x-hidden p-0">
-        <div className="w-full xl:max-w-screen-xl mx-auto overflow-x-auto box-border">
-          <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x">
+        <div className="w-full xl:max-w-screen-xl mx-auto overflow-x-auto box-border ">
+          <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x pb-3 custom-scrollbar">
             {tipoAlimentoData.map((item) => (
               <button
                 key={item.id}
@@ -170,9 +192,7 @@ export default function BasicTableOneModCocina() {
                 className="dark:bg-dark-900"
                 menuPortalTarget={document.body}
                 menuPosition="fixed"
-                styles={{
-                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                }}
+                styles={theme === "dark" ? customSelectStylesDark : undefined}
               />
             </div>
             <div className="flex-1">

@@ -280,6 +280,28 @@ layer(base);
   background-color: #344054;
 }
 
+/* Scrollbar base */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  background: transparent;
+}
+
+/* Scrollbar thumb */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb; /* gris claro por defecto */
+  border-radius: 8px;
+}
+
+/* Scrollbar fondo en modo oscuro */
+.dark .custom-scrollbar::-webkit-scrollbar {
+  background: #111827; /* negro Tailwind (gray-900) */
+}
+
+/* Scrollbar thumb en modo oscuro */
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #374151; /* gris oscuro Tailwind (gray-700) */
+}
+
 @layer utilities {
   /* For Remove Date Icon */
   input[type="date"]::-webkit-inner-spin-button,
