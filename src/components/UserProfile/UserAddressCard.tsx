@@ -53,7 +53,7 @@ const { isOpen, openModal, closeModal } = useModal();
       return () => clearInterval(observer);
     }, []);
 
-    const saveClickToast = () => {
+    const saveClickToastAddress = () => {
     toast.info("Se ha guardado la configuracion");
     closeModal();
   };
@@ -230,7 +230,7 @@ const { isOpen, openModal, closeModal } = useModal();
           />
         </div>
 
-        <Button size="md" onClick={saveClickToast}>Enviar</Button>
+        <Button size="md" onClick={saveClickToastAddress}>Enviar</Button>
       </div>
       </ComponentCard>
       </div>
