@@ -21,7 +21,9 @@ export default function UserInfoCard() {
   }, []);
 
   const saveClickToastInfo = () => {
-    toast.info("Se ha guardado la configuracion");
+    setTimeout(() => {
+      toast.info("Se ha guardado la configuracion");
+    }, 100);
     closeModal();
   };
   return (
@@ -133,7 +135,7 @@ export default function UserInfoCard() {
               </p>
             </div>
             <form className="flex flex-col">
-              <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
+              <div className="custom-scrollbar h-[350px] overflow-y-auto px-2 pb-3">
                 <div className="mt-7">
                   <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                     Información personal
@@ -168,9 +170,6 @@ export default function UserInfoCard() {
                 </div>
               </div>
               <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                {/* <Button size="sm" variant="outline" onClick={closeModal}>
-                  Cerrar
-                </Button> */}
                 <Button size="sm" onClick={saveClickToastInfo}>
                   Guardar cambios
                 </Button>
