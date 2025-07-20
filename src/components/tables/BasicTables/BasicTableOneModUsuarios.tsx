@@ -121,11 +121,7 @@ export default function BasicTableOneModUsuarios() {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          toast.info("Usuario eliminado exitosamente");
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           toast.info("No se ha borrado el usuario");
         }
