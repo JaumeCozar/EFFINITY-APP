@@ -99,7 +99,7 @@ export default function BasicTableOneModCocinaV2() {
       />
 
       <ToastContainer
-        position="top-right"
+        position="bottom-left"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}

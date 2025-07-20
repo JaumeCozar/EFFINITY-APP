@@ -7,8 +7,8 @@ import Select from "../../components/form/Select";
 import { EnvelopeIcon } from "../../icons";
 import PhoneInput from "../../components/form/group-input/PhoneInput";
 import ComponentCard from "../common/ComponentCard";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import { useState, useEffect } from "react";
+import { toast} from "react-toastify";
+
 export default function UserAddressCard() {
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -39,17 +39,7 @@ export default function UserAddressCard() {
     console.log("Updated phone number:", phoneNumber);
   };
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
-  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
-  useEffect(() => {
-    const observer = setInterval(() => {
-      const current = localStorage.getItem("theme") || "light";
-      setTheme((prev) => (prev !== current ? current : prev));
-    }, 300); // actualiza cada 300ms
-
-    return () => clearInterval(observer);
-  }, []);
+  
 
   const saveClickToastAddress = () => {
     setTimeout(() => {
@@ -60,19 +50,7 @@ export default function UserAddressCard() {
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme}
-        transition={Bounce}
-      />
+      
 
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">

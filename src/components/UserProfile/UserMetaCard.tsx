@@ -3,21 +3,11 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import { useState, useEffect } from "react";
+import {toast } from "react-toastify";
+
 export default function UserMetaCard() {
   const { isOpen, openModal, closeModal } = useModal();
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
-  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
-  useEffect(() => {
-    const observer = setInterval(() => {
-      const current = localStorage.getItem("theme") || "light";
-      setTheme((prev) => (prev !== current ? current : prev));
-    }, 300); // actualiza cada 300ms
-
-    return () => clearInterval(observer);
-  }, []);
+  
 
   const saveClickToastMeta = () => {
     setTimeout(() => {
@@ -27,19 +17,7 @@ export default function UserMetaCard() {
   };
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme}
-        transition={Bounce}
-      />
+      
 
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
