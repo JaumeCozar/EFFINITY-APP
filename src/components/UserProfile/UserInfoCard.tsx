@@ -3,42 +3,26 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+
 export default function UserInfoCard() {
   const { isOpen, openModal, closeModal } = useModal();
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
-  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
-  useEffect(() => {
-    const observer = setInterval(() => {
-      const current = localStorage.getItem("theme") || "light";
-      setTheme((prev) => (prev !== current ? current : prev));
-    }, 300); // actualiza cada 300ms
-
-    return () => clearInterval(observer);
-  }, []);
+  
 
   const saveClickToastInfo = () => {
-    toast.info("Se ha guardado la configuracion");
+    setTimeout(() => {
+      toast.info("Se ha guardado la configuracion");
+    }, 100);
     closeModal();
   };
+
+
+
+  
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme}
-        transition={Bounce}
-      />
+      
 
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -133,7 +117,7 @@ export default function UserInfoCard() {
               </p>
             </div>
             <form className="flex flex-col">
-              <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
+              <div className="custom-scrollbar h-[350px] overflow-y-auto px-2 pb-3">
                 <div className="mt-7">
                   <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                     Información personal
@@ -168,9 +152,6 @@ export default function UserInfoCard() {
                 </div>
               </div>
               <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                {/* <Button size="sm" variant="outline" onClick={closeModal}>
-                  Cerrar
-                </Button> */}
                 <Button size="sm" onClick={saveClickToastInfo}>
                   Guardar cambios
                 </Button>

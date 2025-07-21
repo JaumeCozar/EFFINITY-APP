@@ -1,17 +1,30 @@
 .layout-wrapper {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
   max-width: 1160px;
 }
-
+/* Desktop normal (sidebar de 290px visible) */
 @media (min-width: 1024px) {
   .layout-wrapper {
-    width: calc(100vw - 290px); /* si tu sidebar ocupa 290px */
-    max-width: 1160px;
+    width: calc(100vw - 290px);
+    max-width: 1280px;
+  }
+}
+/* Pantallas grandes */
+@media (min-width: 1440px) {
+  .layout-wrapper {
+    max-width: 1400px;
+  }
+}
+@media (min-width: 1920px) {
+  .layout-wrapper {
+    max-width: 1600px;
+  }
+}
+@media (min-width: 2400px) {
+  .layout-wrapper {
+    max-width: 1800px;
   }
 }

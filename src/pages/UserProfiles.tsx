@@ -3,10 +3,39 @@ import UserMetaCard from "../components/UserProfile/UserMetaCard";
 import UserInfoCard from "../components/UserProfile/UserInfoCard";
 import UserAddressCard from "../components/UserProfile/UserAddressCard";
 import PageMeta from "../components/common/PageMeta";
-
+import { ToastContainer, Bounce } from "react-toastify";
+import { useState, useEffect } from "react";
 export default function UserProfiles() {
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  // Efecto para actualizar el estado cuando cambia localStorage (internamente)
+  useEffect(() => {
+    const observer = setInterval(() => {
+      const current = localStorage.getItem("theme") || "light";
+      setTheme((prev) => (prev !== current ? current : prev));
+    }, 300); // actualiza cada 300ms
+
+    return () => clearInterval(observer);
+  }, []);
+
+  
+
   return (
     <>
+
+    <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+        transition={Bounce}
+      />
+
       <PageMeta
         title="Perfil | Effinity"
         description="This is React.js Profile Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
