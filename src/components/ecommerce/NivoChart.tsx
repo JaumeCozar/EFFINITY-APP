@@ -10,7 +10,7 @@ export const MyBar = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 600);
+      setIsSmallScreen(window.innerWidth < 1200);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
