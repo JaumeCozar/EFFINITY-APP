@@ -126,7 +126,7 @@ export default function BasicTableOneModCocinaV2() {
             key={cocina.id}
             className="bg-white w-full md:w-[calc(50%-12px)] border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6  dark:bg-white/[0.03]"
           >
-            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-col mb-4 xl:mb-0 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex flex-col my-4 items-center w-full gap-3 xl:flex-row">
                 <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
                   <img src={cocina.image} alt={cocina.nombre} />
@@ -142,7 +142,7 @@ export default function BasicTableOneModCocinaV2() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-center xl:flex-row xl:items-center xl:justify-between px-4 gap-2 mb-4">
+              <div className="flex flex-col items-center xl:flex-row xl:items-center xl:justify-between gap-2">
                 <div className="w-1/2 flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
                   <button
                     onClick={openModal}
