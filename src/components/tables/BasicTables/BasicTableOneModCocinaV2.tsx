@@ -67,14 +67,9 @@ export default function BasicTableOneModCocinaV2() {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          toast.info("Cocina eliminada exitosamente");
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           toast.info("No se ha borrado la cocina");
-          //Añadir aqui la tostada cuando se clickee Cancelar
         }
       });
   };
