@@ -10,7 +10,6 @@ import {
   HorizontaLDots,
   ListIcon,
   // PageIcon,
-  PieChartIcon,
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
@@ -78,14 +77,14 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
-  {
-    icon: <PieChartIcon />,
-    name: "Gráficas ",
-    subItems: [
-      { name: "Gráficas de líneas", path: "/line-chart", pro: false },
-      { name: "Gráficas de barras", path: "/bar-chart", pro: false },
-    ],
-  },
+  // {
+  //   icon: <PieChartIcon />,
+  //   name: "Gráficas ",
+  //   subItems: [
+  //     { name: "Gráficas de líneas", path: "/line-chart", pro: false },
+  //     { name: "Gráficas de barras", path: "/bar-chart", pro: false },
+  //   ],
+  // },
   // {
   //   icon: <BoxCubeIcon />,
   //   name: "UI Elements",
