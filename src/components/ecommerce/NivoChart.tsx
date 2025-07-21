@@ -1,9 +1,21 @@
 import { ResponsiveBar } from '@nivo/bar'
 import data from './NivoChart.json'
 import { useTheme } from '../../context/ThemeContext'
+import { useEffect, useState } from 'react';
 
 export const MyBar = () => {
   const { theme } = useTheme(); // 'light' o 'dark'
+
+  // Hook para detectar el ancho de la ventana
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 600);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Colores según el tema
   const axisColor = theme === 'dark' ? '#e5e7eb' : '#333';
@@ -14,8 +26,8 @@ export const MyBar = () => {
 
   return (
     <div
-      className="h-[300px] w-full border border-gray-200 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800"
-      style={{ zIndex: 0, position: 'relative' }}
+      className="w-full border border-gray-200 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800"
+      style={{ zIndex: 0, position: 'relative', height: '40vw', minHeight: 200, maxHeight: 500 }}
     >
       <ResponsiveBar
         data={data}
@@ -46,33 +58,40 @@ export const MyBar = () => {
           }
         ]}
         axisBottom={{
-          legend: 'country (indexBy)',
+          legend: '',
           legendOffset: 32,
           tickPadding: 5,
-          tickSize: 5
+          tickSize: 5,
+          tickRotation: isSmallScreen ? -90 : 0,
+          tickValues: 'every 1',
         }}
         axisLeft={{
           legend: 'food',
           legendOffset: -40,
           tickPadding: 5,
-          tickSize: 5
+          tickSize: 5,
         }}
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        margin={{
+          top: 50,
+          right: isSmallScreen ? 20 : 130,
+          bottom: isSmallScreen ? 90 : 50,
+          left: isSmallScreen ? 40 : 60
+        }}
         theme={{
           axis: {
             ticks: {
               line: { stroke: axisColor },
-              text: { fill: axisColor }
+              text: { fill: axisColor, fontSize: isSmallScreen ? 10 : 12 }
             },
             legend: {
-              text: { fill: axisColor }
+              text: { fill: axisColor, fontSize: isSmallScreen ? 10 : 12 }
             }
           },
           legends: {
-            text: { fill: legendTextColor }
+            text: { fill: legendTextColor, fontSize: isSmallScreen ? 10 : 12 }
           },
           labels: {
-            text: { fill: labelTextColor }
+            text: { fill: labelTextColor, fontSize: isSmallScreen ? 10 : 12 }
           },
           grid: {
             line: { stroke: gridColor }
