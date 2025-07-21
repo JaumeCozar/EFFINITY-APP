@@ -8,8 +8,6 @@ import {
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  ListIcon,
-  // PageIcon,
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
@@ -40,17 +38,16 @@ const navItems: NavItem[] = [
     name: "Perfil de Usuario",
     path: "/profile",
   },
-  {
-    name: "Registro",
-    icon: <ListIcon />,
-    subItems: [
-              { name: "Empresa", path: "/registro-empresa", pro: false },
-              { name: "Cocina", path: "/registro-cocina", pro: false },
-              // { name: "Comida", path: "/registro-comida", pro: false },
-              { name: "Usuarios", path: "/registro-usuarios", pro: false }
-
-    ],
-  },
+  // {
+  //   name: "Registro",
+  //   icon: <ListIcon />,
+  //   subItems: [
+  //             { name: "Empresa", path: "/registro-empresa", pro: false },
+  //             { name: "Cocina", path: "/registro-cocina", pro: false },
+  //             // { name: "Comida", path: "/registro-comida", pro: false },
+  //             { name: "Usuarios", path: "/registro-usuarios", pro: false }
+  //   ],
+  // },
   // { name: "Form Elements", path: "/form-elements", pro: false }, PARA HABILITAR FORM-ELEMENTS(AHORA REGISTRO)
   {
     name: "Tablas",
