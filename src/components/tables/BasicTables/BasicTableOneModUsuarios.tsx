@@ -7,38 +7,25 @@ import Label from "../../form/Label";
 import Input from "../../../components/form/input/InputField";
 import Select from "react-select";
 import { EnvelopeIcon } from "../../../icons";
-import usuarioData from "../../../components/form/form-elements/usuarios.json";
+// import usuarioData from "../../../components/form/form-elements/usuarios.json";
 import Swal from "sweetalert2";
 import Badge from "../../ui/badge/Badge";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import PageMeta from "../../common/PageMeta";
 
-// interface Order {
-//   id: number;
-//   user: {
-//     image: string;
-//     name: string;
-//     role: string;
-//   };
-//   projectName: string;
-//   team: {
-//     images: string[];
-//   };
-//   status: string;
-//   budget: string;
-// }
-
 interface User {
-  id: string;
-  image: string;
-  nombre: string;
+  id: number;
+  name: string;
+  surname: string | null;
   email: string;
-  telefono: string;
-  contrasena: string;
-  rol: string;
-  estado: string;
-  ubicacion: string;
+  password: string | null;
+  tel: string | null;
+  role: string;
+  status: string | null;
+  companyId: number;
+  kitchenId: number;
 }
+
 
 export default function BasicTableOneModUsuarios() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -86,17 +73,18 @@ export default function BasicTableOneModUsuarios() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (selectedUser) {
-      setFormData({
-        nombre: selectedUser.nombre,
-        email: selectedUser.email,
-        contrasena: selectedUser.contrasena,
-        rol: selectedUser.rol,
-        estado: selectedUser.estado,
-        ubicacion: selectedUser.ubicacion,
-      });
-    }
-  }, [selectedUser]);
+  if (selectedUser) {
+    setFormData({
+      nombre: `${selectedUser.name} ${selectedUser.surname || ""}`,
+      email: selectedUser.email,
+      contrasena: selectedUser.password || "",
+      rol: selectedUser.role,
+      estado: selectedUser.status || "",
+      ubicacion: String(selectedUser.kitchenId || ""),
+    });
+  }
+}, [selectedUser]);
+
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -140,6 +128,37 @@ export default function BasicTableOneModUsuarios() {
     return () => clearInterval(observer);
   }, []);
 
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+  const fetchUsers = async () => {
+  try {
+    const token = localStorage.getItem("token"); // o desde cookies
+
+    const response = await fetch("http://localhost:8080/users", {
+      headers: {
+        Authorization: `Bearer ${token}`, // O según lo que tu backend espere
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}`);
+    }
+
+    const data = await response.json();
+    setUsers(data);
+  } catch (error) {
+    console.error("Error al cargar los usuarios:", error);
+    toast.error("No se pudieron cargar los usuarios");
+  }
+};
+fetchUsers();
+
+}, []);
+
+
   return (
     <>
       <ToastContainer
@@ -173,7 +192,7 @@ export default function BasicTableOneModUsuarios() {
       </div>
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {usuarioData.map((user, id) => (
+        {users.map((user, id) => (
           <div
             key={id}
             className="flex flex-col items-center bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.05] rounded-xl p-6 shadow-sm"
@@ -183,35 +202,35 @@ export default function BasicTableOneModUsuarios() {
               <img
                 width={80}
                 height={80}
-                src={user.image}
-                alt={user.nombre}
+                src= "./images/user/user-01.jpg"
+                alt={user.name}
                 className="object-cover w-full h-full"
               />
             </div>
             {/* Nombre, Rol, Correo y Teléfono */}
             <div className="text-center mb-2">
               <span className="block font-semibold text-gray-800 text-xl dark:text-white/90">
-                {user.nombre}
+                {user.name} {user.surname || ""}
               </span>
               <span
                 className={
                   "block text-base font-medium mt-1 " +
-                  (user.rol === "Admin"
+                  (user.role === "Admin"
                     ? "text-purple-400"
-                    : user.rol === "Operario"
+                    : user.role === "Operario"
                     ? "text-blue-400"
-                    : user.rol === "Comercial"
+                    : user.role === "Comercial"
                     ? "text-yellow-400"
                     : "text-gray-500 dark:text-gray-400")
                 }
               >
-                {user.rol}
+                {user.role}
               </span>
               <span className="block text-gray-500 text-base dark:text-gray-400 font-medium mt-2">
                 📧 {user.email}
               </span>
               <span className="block text-gray-500 text-base dark:text-gray-400 font-medium">
-                📞 {user.telefono}
+                📞 {user.tel || "No especificado"}
               </span>
             </div>
             {/* Estado */}
@@ -219,19 +238,19 @@ export default function BasicTableOneModUsuarios() {
               <Badge
                 size="sm"
                 color={
-                  user.estado === "Activo"
+                  user.status === "Activo"
                     ? "success"
-                    : user.estado === "Pendiente"
+                    : user.status === "Pendiente"
                     ? "warning"
                     : "error"
                 }
               >
-                {user.estado}
+                {user.status || "No especificado"}
               </Badge>
             </div>
             {/* Ubicación */}
             <div className="mb-4 text-gray-500 text-sm dark:text-gray-400">
-              {user.ubicacion}
+              {user.kitchenId || "No especificado"}
             </div>
             {/* Botones */}
             <div className="flex gap-3 mt-auto">
@@ -337,29 +356,6 @@ export default function BasicTableOneModUsuarios() {
                 </div>
               </div>
 
-              {/*
-              <div>
-                <Label>Contraseña</Label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder=""
-                    value={formData.contrasena}
-                  />
-                  <button
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                  >
-                    {showPassword ? (
-                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                    ) : (
-                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-              */}
-
               <div>
                 <Label htmlFor="inputTwo">Ubicacion</Label>
                 <Input
@@ -446,28 +442,6 @@ export default function BasicTableOneModUsuarios() {
                   </span>
                 </div>
               </div>
-
-              {/*
-              <div>
-                <Label>Contraseña</Label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder=""
-                  />
-                  <button
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                  >
-                    {showPassword ? (
-                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                    ) : (
-                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-              */}
 
               <div>
                 <Label htmlFor="inputTwo">Ubicacion</Label>
