@@ -129,7 +129,7 @@ export default function BasicTableOneModCocina() {
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
-        closeOnClick={false}
+        closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
