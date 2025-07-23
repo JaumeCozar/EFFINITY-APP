@@ -7,23 +7,28 @@ import Label from "../../form/Label";
 import Input from "../../../components/form/input/InputField";
 import Select from "react-select";
 import { EnvelopeIcon } from "../../../icons";
-// import usuarioData from "../../../components/form/form-elements/usuarios.json";
 import Swal from "sweetalert2";
 import Badge from "../../ui/badge/Badge";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import PageMeta from "../../common/PageMeta";
+
+interface Kitchen {
+  id: number;
+  name: string;
+  ubi: string;
+  imageUrl: string | null;
+}
 
 interface User {
   id: number;
   name: string;
   surname: string | null;
   email: string;
-  password: string | null;
   tel: string | null;
   role: string;
   status: string | null;
-  companyId: number;
-  kitchenId: number;
+  imageUrl: string | null;
+  kitchen: Kitchen | null;
 }
 
 
@@ -77,13 +82,14 @@ export default function BasicTableOneModUsuarios() {
     setFormData({
       nombre: `${selectedUser.name} ${selectedUser.surname || ""}`,
       email: selectedUser.email,
-      contrasena: selectedUser.password || "",
-      rol: selectedUser.role,
+      contrasena: "", // o mantenerla si decides usar contraseñas
+      rol: selectedUser.role || "",
       estado: selectedUser.status || "",
-      ubicacion: String(selectedUser.kitchenId || ""),
+      ubicacion: selectedUser.kitchen?.name || "No especificado",
     });
   }
 }, [selectedUser]);
+
 
 
   const swalWithBootstrapButtons = Swal.mixin({
@@ -250,7 +256,7 @@ fetchUsers();
             </div>
             {/* Ubicación */}
             <div className="mb-4 text-gray-500 text-sm dark:text-gray-400">
-              {user.kitchenId || "No especificado"}
+              {user.kitchen?.name || "No especificado"}
             </div>
             {/* Botones */}
             <div className="flex gap-3 mt-auto">

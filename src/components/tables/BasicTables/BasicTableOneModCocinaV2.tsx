@@ -5,12 +5,19 @@ import Button from "../../ui/button/Button";
 import ComponentCard from "../../common/ComponentCard";
 import Label from "../../form/Label";
 import Input from "../../../components/form/input/InputField";
-import cocinasData from "./Cocinas.json";
+
 import Swal from "sweetalert2";
 import PageMeta from "../../common/PageMeta";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 
 // import Badge from "../../ui/badge/Badge";
+
+interface Kitchen {
+  id: number;
+  name: string;
+  ubi: string;
+  imageUrl: string | null;
+}
 
 export default function BasicTableOneModCocinaV2() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -31,18 +38,6 @@ export default function BasicTableOneModCocinaV2() {
     ubicacion: "",
   });
 
-  type User = (typeof cocinasData)[0];
-
-  const [selectedUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    if (selectedUser) {
-      setFormData({
-        nombre: selectedUser.nombre,
-        ubicacion: selectedUser.ubicacion,
-      });
-    }
-  }, [selectedUser]);
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -87,6 +82,46 @@ export default function BasicTableOneModCocinaV2() {
     return () => clearInterval(observer);
   }, []);
 
+  const [selectedKitchen, setSelectedKitchen] = useState<Kitchen | null>(null);
+  
+    useEffect(() => {
+    if (selectedKitchen) {
+      setFormData({
+        nombre: `${selectedKitchen.name}`,
+        ubicacion: selectedKitchen.ubi || "No especificado",
+      });
+    }
+  }, [selectedKitchen]);
+
+  const [kitchens, setKitchens] = useState<Kitchen[]>([]);
+  
+    useEffect(() => {
+    const fetchKitchens = async () => {
+    try {
+      const token = localStorage.getItem("token"); // o desde cookies
+  
+      const response = await fetch("http://localhost:8080/kitchens", {
+        headers: {
+          Authorization: `Bearer ${token}`, // O según lo que tu backend espere
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setKitchens(data);
+    } catch (error) {
+      console.error("Error al cargar los usuarios:", error);
+      toast.error("No se pudieron cargar los usuarios");
+    }
+  };
+  fetchKitchens();
+  
+  }, []);
+
   return (
     <>
       <PageMeta
@@ -121,23 +156,23 @@ export default function BasicTableOneModCocinaV2() {
       </div>
 
       <div className=" flex flex-wrap gap-2 p-2">
-        {cocinasData.map((cocina) => (
+        {kitchens.map((kitchen, id) => (
           <div
-            key={cocina.id}
+            key={id}
             className="bg-white w-full md:w-[calc(50%-12px)] border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6  dark:bg-white/[0.03]"
           >
             <div className="flex flex-col mb-4 xl:mb-0 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex flex-col my-4 items-center w-full gap-3 xl:flex-row">
                 <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-                  <img src={cocina.image} alt={cocina.nombre} />
+                  <img src={kitchen.imageUrl || ""} alt={kitchen.name} />
                 </div>
                 <div className="order-3 xl:order-2">
                   <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                    {cocina.nombre}
+                    {kitchen.name}
                   </h4>
                   <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {cocina.ubicacion}
+                      {kitchen.ubi}
                     </p>
                   </div>
                 </div>
