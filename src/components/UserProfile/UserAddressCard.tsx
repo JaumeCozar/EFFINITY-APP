@@ -8,6 +8,7 @@ import { EnvelopeIcon } from "../../icons";
 import PhoneInput from "../../components/form/group-input/PhoneInput";
 import ComponentCard from "../common/ComponentCard";
 import { toast} from "react-toastify";
+import { useState, useEffect } from "react";
 
 export default function UserAddressCard() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -48,6 +49,98 @@ export default function UserAddressCard() {
     closeModal();
   };
 
+
+
+  interface UserAddress {
+    id: number;
+    name: string;
+    address:string;
+    zipCode: string;
+    email: string;
+    tel: string;
+    imageUrl: string;
+    sectorName: string;
+  }
+  
+    // Estado para almacenar los datos del formulario
+    const [formData, setFormData] = useState({
+      name: "",
+      address: "",
+      zipCode: "",
+      email: "",
+      tel: "",
+      imageUrl: "",
+      sectorName: ""
+      
+    });
+  
+  
+  const [selectedUserAddress, setSelectedUserAddress] = useState<UserAddress | null>(null);
+    
+      useEffect(() => {
+      if (selectedUserAddress) {
+        setFormData({
+          name: selectedUserAddress.name,
+  address: selectedUserAddress.address,
+  zipCode: selectedUserAddress.zipCode,
+  email: selectedUserAddress.email,
+  tel: selectedUserAddress.tel ?? "",
+  imageUrl: selectedUserAddress.imageUrl ?? "",
+  sectorName: selectedUserAddress.sectorName ?? ""
+        });
+      }
+    }, [selectedUserAddress]);
+  
+  const [useraddress, setUserAddress] = useState<UserAddress | null>(null);
+
+  
+  
+     
+       useEffect(() => {
+  const fetchUserAddress = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:8080/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Construir el objeto que realmente necesitas para mostrar
+      const userData: UserAddress = {
+        id: data.id,
+        name: data.company?.name || "",
+        address: data.company?.adress || "",
+        zipCode: data.company?.zipCode || "",
+        email: data.company?.email || data.email || "",
+        tel: data.company?.tel || "",
+        imageUrl: data.company?.imageUrl || "",
+        sectorName: data.company?.sectorName || "",
+      };
+
+      setUserAddress(userData);
+      setFormData(userData); // También puedes inicializar formData aquí
+    } catch (error) {
+      console.error("Error al cargar los usuarios:", error);
+      toast.error("No se pudieron cargar los usuarios");
+    }
+  };
+
+  fetchUserAddress();
+}, []);
+
+
+
+
+
   return (
     <>
       
@@ -65,7 +158,7 @@ export default function UserAddressCard() {
                   Empresa
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [test empresa]
+                  {useraddress?.name}
                 </p>
               </div>
 
@@ -74,7 +167,7 @@ export default function UserAddressCard() {
                   Dirección
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [ubi]
+                  {useraddress?.address}
                 </p>
               </div>
 
@@ -83,7 +176,7 @@ export default function UserAddressCard() {
                   Código postal
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [43101]
+                  {useraddress?.zipCode}
                 </p>
               </div>
 
@@ -92,7 +185,7 @@ export default function UserAddressCard() {
                   Sector
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [Hostelería]
+                  {useraddress?.sectorName}
                 </p>
               </div>
 
@@ -102,7 +195,7 @@ export default function UserAddressCard() {
                   Teléfono
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [600 123 456]
+                  {useraddress?.tel}
                 </p>
               </div>
 
@@ -112,7 +205,7 @@ export default function UserAddressCard() {
                   Email
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [test@email.com]
+                  {useraddress?.email}
                 </p>
               </div>
             </div>
