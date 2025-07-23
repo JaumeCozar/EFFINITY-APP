@@ -1,26 +1,74 @@
 [
   {
-    "id": "1",
-    "image": "/images/user/user-17.jpg",
+    "id": 1,
     "nombre": "Manzana",
-    "precio": "2.50"
+    "precio": 2.50,
+    "tipoAlimento": {
+      "nombre": "Frutas",
+      "icon": "🍎"
+    }
   },
   {
-    "id": "2",
-    "image": "/images/user/user-18.jpg",
+    "id": 2,
     "nombre": "Piña",
-    "precio": "5.50"
+    "precio": 5.50,
+    "tipoAlimento": {
+      "nombre": "Frutas",
+      "icon": "🍎"
+    }
   },
   {
-    "id": "3",
-    "image": "/images/user/user-19.jpg",
+    "id": 3,
     "nombre": "Tomate",
-    "precio": "1.50"
+    "precio": 1.50,
+    "tipoAlimento": {
+      "nombre": "Verduras",
+      "icon": "🥦"
+    }
   },
   {
-    "id": "4",
-    "image": "/images/user/user-20.jpg",
-    "nombre": "Arandano",
-    "precio": "7.50"
+    "id": 4,
+    "nombre": "Arándano",
+    "precio": 7.50,
+    "tipoAlimento": {
+      "nombre": "Frutas",
+      "icon": "🍎"
+    }
+  },
+  {
+    "id": 5,
+    "nombre": "Salmón",
+    "precio": 12.90,
+    "tipoAlimento": {
+      "nombre": "Pescado",
+      "icon": "🐟"
+    }
+  },
+  {
+    "id": 6,
+    "nombre": "Huevos",
+    "precio": 3.20,
+    "tipoAlimento": {
+      "nombre": "Lácteos",
+      "icon": "🥛"
+    }
+  },
+  {
+    "id": 7,
+    "nombre": "Pan Integral",
+    "precio": 1.80,
+    "tipoAlimento": {
+      "nombre": "Cereales y Legumbres",
+      "icon": "🍞"
+    }
+  },
+  {
+    "id": 8,
+    "nombre": "Leche",
+    "precio": 0.90,
+    "tipoAlimento": {
+      "nombre": "Lácteos",
+      "icon": "🥛"
+    }
   }
 ]

@@ -71,24 +71,32 @@ export default function BasicTableOneModCocina() {
 
   // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
-    image: "",
+  nombre: "",
+  precio: "",
+  tipoAlimento: {
     nombre: "",
-    precio: "",
-  });
+    icon: ""
+  }
+});
+
 
   type User = (typeof usuarioData)[0];
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (selectedUser) {
-      setFormData({
-        image: selectedUser.image,
-        nombre: selectedUser.nombre,
-        precio: selectedUser.precio,
-      });
-    }
-  }, [selectedUser]);
+  if (selectedUser) {
+    setFormData({
+      nombre: selectedUser.nombre,
+      precio: selectedUser.precio.toString(),
+      tipoAlimento: {
+        nombre: selectedUser.tipoAlimento?.nombre ?? "",
+        icon: selectedUser.tipoAlimento?.icon ?? ""
+      }
+    });
+  }
+}, [selectedUser]);
+
 
   const { theme } = useTheme();
 
@@ -218,36 +226,30 @@ export default function BasicTableOneModCocina() {
             {/* Grid de cards de alimentos */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
               {usuarioData.map((user, id) => (
-                <div
-                  key={id}
-                  className="flex flex-col items-center bg-white dark:bg-gray-900 rounded-xl shadow-md p-4 border border-gray-200 dark:border-white/[0.05]"
-                >
-                  <div className="w-24 h-24 mb-4 overflow-hidden rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                    <img
-                      width={96}
-                      height={96}
-                      src={user.image}
-                      alt={user.nombre}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center flex-1 w-full">
-                    <span className="block font-medium text-gray-800 text-lg dark:text-white/90 mb-1 text-center">
-                      {user.nombre}
-                    </span>
-                    <span className="text-gray-500 text-base dark:text-gray-400 mb-4 text-center">
-                      {user.precio}€ / kg
-                    </span>
-                  </div>
-                  <div className="flex gap-2 mt-auto w-full">
-                    <button
-                      onClick={() => {
-                        setSelectedUser(user);
-                        openModal();
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                    >
-                      <svg
+  <div
+    key={id}
+    className="flex flex-col items-center bg-white dark:bg-gray-900 rounded-2xl shadow-md p-6 border border-gray-200 dark:border-white/[0.05]"
+  >
+    {/* <div className="w-20 h-20 mb-4 text-4xl flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full">
+      {user.tipoAlimento?.icon ?? "❓"}
+    </div> */}
+    <div className="text-center mb-3">
+      <div className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-2">{user.nombre}</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400">{user.precio}€ / kg</div>
+      <div className="mt-1 text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+        {user.tipoAlimento?.nombre} {user.tipoAlimento?.icon}
+      </div>
+
+    </div>
+    <div className="flex gap-2 mt-auto w-full">
+      <button
+        onClick={() => {
+          setSelectedUser(user);
+          openModal();
+        }}
+        className="flex-1 rounded-full px-4 py-2 text-sm font-medium border border-gray-300 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.05]"
+      >
+        <svg
                         className="fill-current"
                         width="18"
                         height="18"
@@ -262,13 +264,12 @@ export default function BasicTableOneModCocina() {
                           fill=""
                         />
                       </svg>
-                      
-                    </button>
-                    <button
-                      className="flex-1 flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                      onClick={handleDelete}
-                    >
-                      <svg
+      </button>
+      <button
+        onClick={handleDelete}
+        className="flex-1 rounded-full px-4 py-2 text-sm font-medium border border-red-300 bg-white hover:bg-red-50 text-red-600 dark:border-red-700 dark:bg-gray-800 dark:hover:bg-white/[0.05]"
+      >
+        <svg
                         className="fill-current"
                         width="18"
                         height="18"
@@ -301,11 +302,11 @@ export default function BasicTableOneModCocina() {
                           fill=""
                         />
                       </svg>
-                      
-                    </button>
-                  </div>
-                </div>
-              ))}
+      </button>
+    </div>
+  </div>
+))}
+
             </div>
           </div>
         </div>
