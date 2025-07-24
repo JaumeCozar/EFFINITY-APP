@@ -212,7 +212,7 @@ export default function BasicTableOneModCocina() {
             e.stopPropagation();
             console.log("Editar tipo:", tipo.nombre);
           }}
-          className="flex flex-1 items-center justify-center rounded-full px-4 py-2 text-sm font-medium border border-gray-300 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.05] text-gray-950 dark:text-gray-400"
+          className="flex flex-1 items-center justify-center rounded-full px-4 py-2 text-sm font-medium border border-gray-300 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.05] text-gray-950"
           title="Editar"
         >
           <svg
