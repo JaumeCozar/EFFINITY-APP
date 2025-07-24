@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import Badge from "../../ui/badge/Badge";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import PageMeta from "../../common/PageMeta";
-
+import { EyeCloseIcon, EyeIcon } from "../../../icons";
 interface Kitchen {
   id: number;
   name: string;
@@ -24,6 +24,7 @@ interface User {
   name: string;
   surname: string | null;
   email: string;
+  password: string;
   tel: string | null;
   role: string;
   status: string | null;
@@ -47,6 +48,8 @@ export default function BasicTableOneModUsuarios() {
   // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
     nombre: "",
+    apellido: "",
+    telefono: "",
     email: "",
     contrasena: "",
     rol: "",
@@ -79,9 +82,11 @@ export default function BasicTableOneModUsuarios() {
   useEffect(() => {
     if (selectedUser) {
       setFormData({
-        nombre: `${selectedUser.name} ${selectedUser.surname || ""}`,
+        nombre: selectedUser.name || "",
+        apellido: selectedUser.surname || "",
+        telefono: selectedUser.tel || "",
         email: selectedUser.email,
-        contrasena: "", // o mantenerla si decides usar contraseñas
+        contrasena: selectedUser.password, // o mantenerla si decides usar contraseñas
         rol: selectedUser.role || "",
         estado: selectedUser.status || "",
         ubicacion: selectedUser.kitchen?.name || "No especificado",
@@ -99,25 +104,52 @@ export default function BasicTableOneModUsuarios() {
     buttonsStyling: false,
   });
 
-  const handleDelete = () => {
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          toast.info("Usuario eliminado exitosamente");
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info("No se ha borrado el usuario");
+ const handleDelete = async (userId: number) => {
+  // Mostrar la alerta de confirmación de SweetAlert2
+  swalWithBootstrapButtons
+    .fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+    })
+    .then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem("token"); // o desde cookies
+          // Realizar la solicitud DELETE al backend usando fetch
+          const response = await fetch(`http://localhost:8080/users/${userId}`, {
+            method: 'DELETE',
+            headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         }
-      });
-  };
+
+          });
+
+          // Verificar si la respuesta fue exitosa
+          if (response.ok) {
+            // Actualizar el estado local eliminando el usuario con ese ID
+            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+            toast.success("Usuario eliminado exitosamente");
+          } else {
+            // Si la respuesta no es exitosa, mostrar un mensaje de error
+            toast.error("Hubo un error al eliminar el usuario");
+          }
+        } catch (error) {
+          // Manejo de errores en caso de fallo en la solicitud
+          console.error('Error al eliminar el usuario:', error);
+          toast.error("Hubo un error inesperado");
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        toast.info("No se ha borrado el usuario");
+      }
+    });
+};
+
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
@@ -160,29 +192,63 @@ export default function BasicTableOneModUsuarios() {
   }, []);
 
   // 1. Estado para nuevo usuario
-  const [newUserData, setNewUserData] = useState({
+  const [newUserData, setNewUserData] = useState<{
+    nombre: string;
+    apellidos: string;
+    email: string;
+    contrasena: number | string;
+    rol: string;
+    estado: string;
+    ubicacion: string;
+    telefono: string;
+    kitchenId: number | string;
+  }>({
     nombre: "",
     apellidos: "",
     email: "",
-    contrasena: 1234,
+    telefono: "",
+    contrasena: "",
     rol: "",
     estado: "",
     ubicacion: "",
-    telefono: "",
-    kitchenId: "", // debe ser un número
+    kitchenId: "",
   });
 
   // 2. Función para manejar cambios en inputs
   const handleNewUserChange = (field: string, value: string) => {
+  if (field === "telefono") {
+    // Permitir solo números y limitar a 9 caracteres
+    const cleaned = value.replace(/\D/g, "").slice(0, 9);
+    setNewUserData((prev) => ({
+      ...prev,
+      [field]: cleaned,
+    }));
+  } else {
     setNewUserData((prev) => ({
       ...prev,
       [field]: field === "kitchenId" ? Number(value) : value,
     }));
-  };
+  }
+};
+
 
   // 3. Función para hacer POST y añadir usuario
   const handleAddUser = async () => {
     try {
+
+      // Validar telefono
+
+      if (newUserData.telefono.length !== 9) {
+  toast.error("El número de teléfono debe tener 9 dígitos");
+  return;
+}
+
+// Validar contraseña
+    if (!newUserData.contrasena || newUserData.contrasena.toString().length < 8) {
+      toast.error("La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:8080/users", {
         method: "POST",
@@ -202,9 +268,6 @@ export default function BasicTableOneModUsuarios() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}`);
-      }
 
       const createdUser = await response.json();
 
@@ -212,7 +275,7 @@ export default function BasicTableOneModUsuarios() {
       setUsers((prev) => [...prev, createdUser]);
 
       toast.success("Usuario añadido exitosamente");
-      closeModal2(); // Cierra modal
+      
 
       // Limpiar formulario
       setNewUserData({
@@ -220,7 +283,7 @@ export default function BasicTableOneModUsuarios() {
         apellidos: "",
         email: "",
         telefono: "",
-        contrasena: 1234,
+        contrasena: "",
         rol: "",
         estado: "",
         ubicacion: "",
@@ -230,6 +293,7 @@ export default function BasicTableOneModUsuarios() {
       console.error("Error al añadir usuario:", error);
       toast.error("No se pudo añadir el usuario");
     }
+    closeModal2(); // Cierra modal
   };
 
   const [kitchens, setKitchens] = useState<{ id: number; name: string }[]>([]);
@@ -260,6 +324,8 @@ export default function BasicTableOneModUsuarios() {
     label: kitchen.name,
   }));
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <>
       <ToastContainer
@@ -274,6 +340,7 @@ export default function BasicTableOneModUsuarios() {
         pauseOnHover
         theme={theme}
         transition={Bounce}
+        style={{ zIndex: 99999 }}
       />
 
       <PageMeta
@@ -339,9 +406,9 @@ export default function BasicTableOneModUsuarios() {
               <Badge
                 size="sm"
                 color={
-                  user.status === "Activo"
+                  user.status === "activo"
                     ? "success"
-                    : user.status === "Pendiente"
+                    : user.status === "pendiente"
                     ? "warning"
                     : "error"
                 }
@@ -385,7 +452,7 @@ export default function BasicTableOneModUsuarios() {
                 size="sm"
                 variant="outline"
                 className="flex items-center gap-2"
-                onClick={handleDelete}
+                onClick={() => handleDelete(user.id)} // Pasar el ID del usuario
               >
                 <svg
                   className="fill-current"
@@ -433,13 +500,45 @@ export default function BasicTableOneModUsuarios() {
           <ComponentCard title="Datos">
             <div className="space-y-6">
               <div>
-                <Label htmlFor="inputOne">Nombre Completo</Label>
+                <Label htmlFor="inputOne">Nombre</Label>
                 <Input
                   type="text"
                   id="inputOne"
                   placeholder="Paco de Lucia"
                   value={formData.nombre}
                 />
+              </div>
+
+              <div>
+                <Label htmlFor="inputThree">Apellido</Label>
+                <Input
+                  type="text"
+                  id="inputThree"
+                  placeholder="de Lucia"
+                  value={formData.apellido}
+                  onChange={(e) =>
+                    handleNewUserChange("apellidos", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="">
+                <Label htmlFor="inputTel">Teléfono</Label>
+                <div className="relative">
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 pl-3 text-gray-500">
+                    +34
+                  </span>
+                  <Input
+                    type="text"
+                    id="inputTel"
+                    placeholder="616 565 453"
+                    value={formData.telefono}
+                    onChange={(e) =>
+                      handleNewUserChange("telefono", e.target.value)
+                    }
+                    className="pl-12" // padding-left para que no se solape con el prefijo
+                  />
+                </div>
               </div>
 
               <div>
@@ -454,6 +553,30 @@ export default function BasicTableOneModUsuarios() {
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
                     <EnvelopeIcon className="size-6" />
                   </span>
+                </div>
+              </div>
+
+              <div>
+                <Label>Contraseña</Label>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Ingrese su contraseña"
+                    value={formData.contrasena}
+                    onChange={(e) =>
+                      handleNewUserChange("contrasena", e.target.value)
+                    }
+                  />
+                  <button
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                  >
+                    {showPassword ? (
+                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    ) : (
+                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -495,6 +618,26 @@ export default function BasicTableOneModUsuarios() {
                     handleSelectChange(selectedOption?.value || "", "estado")
                   }
                   placeholder="Selecciona una opción"
+                  className="dark:bg-dark-900"
+                />
+              </div>
+
+              <div>
+                <Label>Ubicacion</Label>
+                <Select
+                  options={kitchenOptions}
+                  value={
+                    kitchenOptions.find(
+                      (opt) => opt.value === newUserData.kitchenId
+                    ) || null
+                  }
+                  onChange={(selectedOption) =>
+                    handleNewUserChange(
+                      "kitchenId",
+                      selectedOption ? String(selectedOption.value) : ""
+                    )
+                  }
+                  placeholder="Selecciona una cocina"
                   className="dark:bg-dark-900"
                 />
               </div>
@@ -543,17 +686,23 @@ export default function BasicTableOneModUsuarios() {
                 />
               </div>
 
-              <div>
+              <div className="">
                 <Label htmlFor="inputTel">Teléfono</Label>
-                <Input
-                  type="text"
-                  id="inputTel"
-                  placeholder="123456789"
-                  value={newUserData.telefono}
-                  onChange={(e) =>
-                    handleNewUserChange("telefono", e.target.value)
-                  }
-                />
+                <div className="relative">
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 pl-3 text-gray-500">
+                    +34
+                  </span>
+                  <Input
+                    type="text"
+                    id="inputTel"
+                    placeholder="616 565 453"
+                    value={newUserData.telefono}
+                    onChange={(e) =>
+                      handleNewUserChange("telefono", e.target.value)
+                    }
+                    className="pl-12" // padding-left para que no se solape con el prefijo
+                  />
+                </div>
               </div>
 
               <div>
@@ -574,16 +723,29 @@ export default function BasicTableOneModUsuarios() {
                 </div>
               </div>
 
-              {/* <div>
-                <Label htmlFor="inputTwo">Ubicacion</Label>
-                <Input
-                  type="text"
-                  id="inputTwo"
-                  placeholder="Nombre de la Cocina"
-                  value={newUserData.ubicacion}
-            onChange={(e) => handleNewUserChange("ubicacion", e.target.value)}
-                />
-              </div> */}
+              <div>
+                <Label>Contraseña</Label>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Ingrese su contraseña"
+                    value={newUserData.contrasena}
+                    onChange={(e) =>
+                      handleNewUserChange("contrasena", e.target.value)
+                    }
+                  />
+                  <button
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                  >
+                    {showPassword ? (
+                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    ) : (
+                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
 
               <div>
                 <Label>Rol</Label>
