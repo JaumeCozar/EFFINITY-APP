@@ -159,79 +159,106 @@ export default function BasicTableOneModUsuarios() {
     fetchUsers();
   }, []);
 
-
-
   // 1. Estado para nuevo usuario
-const [newUserData, setNewUserData] = useState({
-  nombre: "",
-  apellidos:"",
-  email: "",
-  contrasena: 1234,
-  rol: "",
-  estado: "",
-  ubicacion: "",
-  telefono: "",
-  kitchenId: 0, // debe ser un número
-});
+  const [newUserData, setNewUserData] = useState({
+    nombre: "",
+    apellidos: "",
+    email: "",
+    contrasena: 1234,
+    rol: "",
+    estado: "",
+    ubicacion: "",
+    telefono: "",
+    kitchenId: "", // debe ser un número
+  });
 
-// 2. Función para manejar cambios en inputs
-const handleNewUserChange = (field: string, value: string) => {
-  setNewUserData((prev) => ({ ...prev, [field]: value }));
-};
+  // 2. Función para manejar cambios en inputs
+  const handleNewUserChange = (field: string, value: string) => {
+    setNewUserData((prev) => ({
+      ...prev,
+      [field]: field === "kitchenId" ? Number(value) : value,
+    }));
+  };
 
-// 3. Función para hacer POST y añadir usuario
-const handleAddUser = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:8080/users", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newUserData.nombre,
-        surname: newUserData.apellidos,
-        email: newUserData.email,
-        tel: newUserData.telefono,
-        password: newUserData.contrasena,
-        role: newUserData.rol,
-        status: newUserData.estado,
-        kitchenId: 2, // ajusta según tu backend
-      }),
-    });
+  // 3. Función para hacer POST y añadir usuario
+  const handleAddUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:8080/users", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newUserData.nombre,
+          surname: newUserData.apellidos,
+          email: newUserData.email,
+          tel: newUserData.telefono,
+          password: newUserData.contrasena,
+          role: newUserData.rol,
+          status: newUserData.estado,
+          kitchenId: newUserData.kitchenId,
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+
+      const createdUser = await response.json();
+
+      // 4. Actualizar usuarios localmente para que se vea inmediatamente
+      setUsers((prev) => [...prev, createdUser]);
+
+      toast.success("Usuario añadido exitosamente");
+      closeModal2(); // Cierra modal
+
+      // Limpiar formulario
+      setNewUserData({
+        nombre: "",
+        apellidos: "",
+        email: "",
+        telefono: "",
+        contrasena: 1234,
+        rol: "",
+        estado: "",
+        ubicacion: "",
+        kitchenId: "",
+      });
+    } catch (error) {
+      console.error("Error al añadir usuario:", error);
+      toast.error("No se pudo añadir el usuario");
     }
+  };
 
-    const createdUser = await response.json();
+  const [kitchens, setKitchens] = useState<{ id: number; name: string }[]>([]);
 
-    // 4. Actualizar usuarios localmente para que se vea inmediatamente
-    setUsers((prev) => [...prev, createdUser]);
+  useEffect(() => {
+    const fetchKitchens = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:8080/kitchens", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        const data = await res.json();
+        setKitchens(data);
+      } catch (error) {
+        console.error("Error cargando cocinas:", error);
+        toast.error("No se pudieron cargar las cocinas");
+      }
+    };
+    fetchKitchens();
+  }, []);
 
-    toast.success("Usuario añadido exitosamente");
-    closeModal2(); // Cierra modal
-
-    // Limpiar formulario
-    setNewUserData({
-      nombre: "",
-      apellidos:"",
-      email: "",
-      telefono: "",
-      contrasena: 1234,
-      rol: "",
-      estado: "",
-      ubicacion: "",
-       kitchenId: 2
-    });
-  } catch (error) {
-    console.error("Error al añadir usuario:", error);
-    toast.error("No se pudo añadir el usuario");
-  }
-};
-
-
+  const kitchenOptions = kitchens.map((kitchen) => ({
+    value: kitchen.id,
+    label: kitchen.name,
+  }));
 
   return (
     <>
@@ -491,27 +518,43 @@ const handleAddUser = async () => {
           <ComponentCard title="Datos">
             <div className="space-y-6">
               <div>
-                <Label htmlFor="inputOne">Nombre Completo</Label>
-                <Input type="text" id="inputOne" placeholder="Paco" value={newUserData.nombre}
-            onChange={(e) => handleNewUserChange("nombre", e.target.value)}/>
+                <Label htmlFor="inputOne">Nombre</Label>
+                <Input
+                  type="text"
+                  id="inputOne"
+                  placeholder="Paco"
+                  value={newUserData.nombre}
+                  onChange={(e) =>
+                    handleNewUserChange("nombre", e.target.value)
+                  }
+                />
               </div>
 
               <div>
-                <Label htmlFor="inputThree">Apellidos</Label>
-                <Input type="text" id="inputThree" placeholder="de Lucia" value={newUserData.apellidos}
-            onChange={(e) => handleNewUserChange("apellidos", e.target.value)}/>
+                <Label htmlFor="inputThree">Apellido</Label>
+                <Input
+                  type="text"
+                  id="inputThree"
+                  placeholder="de Lucia"
+                  value={newUserData.apellidos}
+                  onChange={(e) =>
+                    handleNewUserChange("apellidos", e.target.value)
+                  }
+                />
               </div>
 
-                  <div>
-  <Label htmlFor="inputTel">Teléfono</Label>
-  <Input
-    type="text"
-    id="inputTel"
-    placeholder="123456789"
-    value={newUserData.telefono}
-    onChange={(e) => handleNewUserChange("telefono", e.target.value)}
-  />
-</div>
+              <div>
+                <Label htmlFor="inputTel">Teléfono</Label>
+                <Input
+                  type="text"
+                  id="inputTel"
+                  placeholder="123456789"
+                  value={newUserData.telefono}
+                  onChange={(e) =>
+                    handleNewUserChange("telefono", e.target.value)
+                  }
+                />
+              </div>
 
               <div>
                 <Label>Email</Label>
@@ -521,7 +564,9 @@ const handleAddUser = async () => {
                     type="text"
                     className="pl-[62px]"
                     value={newUserData.email}
-              onChange={(e) => handleNewUserChange("email", e.target.value)}
+                    onChange={(e) =>
+                      handleNewUserChange("email", e.target.value)
+                    }
                   />
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
                     <EnvelopeIcon className="size-6" />
@@ -529,7 +574,7 @@ const handleAddUser = async () => {
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 <Label htmlFor="inputTwo">Ubicacion</Label>
                 <Input
                   type="text"
@@ -538,32 +583,65 @@ const handleAddUser = async () => {
                   value={newUserData.ubicacion}
             onChange={(e) => handleNewUserChange("ubicacion", e.target.value)}
                 />
-              </div>
+              </div> */}
 
               <div>
                 <Label>Rol</Label>
                 <Select
-            options={optionsRol}
-            value={optionsRol.find((opt) => opt.value === newUserData.rol) || null}
-            onChange={(selectedOption) =>
-              handleNewUserChange("rol", selectedOption ? selectedOption.value : "")
-            }
-            placeholder="Selecciona una opción"
-            className="dark:bg-dark-900"
-          />
+                  options={optionsRol}
+                  value={
+                    optionsRol.find((opt) => opt.value === newUserData.rol) ||
+                    null
+                  }
+                  onChange={(selectedOption) =>
+                    handleNewUserChange(
+                      "rol",
+                      selectedOption ? selectedOption.value : ""
+                    )
+                  }
+                  placeholder="Selecciona una opción"
+                  className="dark:bg-dark-900"
+                />
               </div>
 
               <div>
                 <Label>Estado</Label>
                 <Select
-            options={optionsEstado}
-            value={optionsEstado.find((opt) => opt.value === newUserData.estado) || null}
-            onChange={(selectedOption) =>
-              handleNewUserChange("estado", selectedOption ? selectedOption.value : "")
-            }
-            placeholder="Selecciona una opción"
-            className="dark:bg-dark-900"
-          />
+                  options={optionsEstado}
+                  value={
+                    optionsEstado.find(
+                      (opt) => opt.value === newUserData.estado
+                    ) || null
+                  }
+                  onChange={(selectedOption) =>
+                    handleNewUserChange(
+                      "estado",
+                      selectedOption ? selectedOption.value : ""
+                    )
+                  }
+                  placeholder="Selecciona una opción"
+                  className="dark:bg-dark-900"
+                />
+              </div>
+
+              <div>
+                <Label>Ubicacion</Label>
+                <Select
+                  options={kitchenOptions}
+                  value={
+                    kitchenOptions.find(
+                      (opt) => opt.value === newUserData.kitchenId
+                    ) || null
+                  }
+                  onChange={(selectedOption) =>
+                    handleNewUserChange(
+                      "kitchenId",
+                      selectedOption ? String(selectedOption.value) : ""
+                    )
+                  }
+                  placeholder="Selecciona una cocina"
+                  className="dark:bg-dark-900"
+                />
               </div>
 
               <Button size="md" onClick={handleAddUser}>
