@@ -31,7 +31,6 @@ interface User {
   kitchen: Kitchen | null;
 }
 
-
 export default function BasicTableOneModUsuarios() {
   const { isOpen, openModal, closeModal } = useModal();
   const {
@@ -56,15 +55,15 @@ export default function BasicTableOneModUsuarios() {
   });
 
   const optionsRol = [
-    { value: "Admin", label: "Admin" },
-    { value: "Operario", label: "Operario" },
-    { value: "Comercial", label: "Comercial" },
+    { value: "admin", label: "Admin" },
+    { value: "operario", label: "Operario" },
+    { value: "comercial", label: "Comercial" },
   ];
 
   const optionsEstado = [
-    { value: "Activo", label: "Activo" },
-    { value: "Pendiente", label: "Pendiente" },
-    { value: "Deshabilitado", label: "Deshabilitado" },
+    { value: "activo", label: "Activo" },
+    { value: "pendiente", label: "Pendiente" },
+    { value: "deshabilitado", label: "Deshabilitado" },
   ];
 
   // Esta función maneja el cambio de selección en el select de rol y estado
@@ -78,19 +77,17 @@ export default function BasicTableOneModUsuarios() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
-  if (selectedUser) {
-    setFormData({
-      nombre: `${selectedUser.name} ${selectedUser.surname || ""}`,
-      email: selectedUser.email,
-      contrasena: "", // o mantenerla si decides usar contraseñas
-      rol: selectedUser.role || "",
-      estado: selectedUser.status || "",
-      ubicacion: selectedUser.kitchen?.name || "No especificado",
-    });
-  }
-}, [selectedUser]);
-
-
+    if (selectedUser) {
+      setFormData({
+        nombre: `${selectedUser.name} ${selectedUser.surname || ""}`,
+        email: selectedUser.email,
+        contrasena: "", // o mantenerla si decides usar contraseñas
+        rol: selectedUser.role || "",
+        estado: selectedUser.status || "",
+        ubicacion: selectedUser.kitchen?.name || "No especificado",
+      });
+    }
+  }, [selectedUser]);
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -122,47 +119,118 @@ export default function BasicTableOneModUsuarios() {
       });
   };
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   // Efecto para actualizar el estado cuando cambia localStorage (internamente)
   useEffect(() => {
     const observer = setInterval(() => {
-      const current = localStorage.getItem('theme') || 'light';
-      setTheme(prev => (prev !== current ? current : prev));
+      const current = localStorage.getItem("theme") || "light";
+      setTheme((prev) => (prev !== current ? current : prev));
     }, 300); // actualiza cada 300ms
 
     return () => clearInterval(observer);
   }, []);
 
-
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-  const fetchUsers = async () => {
-  try {
-    const token = localStorage.getItem("token"); // o desde cookies
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("token"); // o desde cookies
 
+        const response = await fetch("http://localhost:8080/users", {
+          headers: {
+            Authorization: `Bearer ${token}`, // O según lo que tu backend espere
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("Error al cargar los usuarios:", error);
+        toast.error("No se pudieron cargar los usuarios");
+      }
+    };
+    fetchUsers();
+  }, []);
+
+
+
+  // 1. Estado para nuevo usuario
+const [newUserData, setNewUserData] = useState({
+  nombre: "",
+  apellidos:"",
+  email: "",
+  contrasena: 1234,
+  rol: "",
+  estado: "",
+  ubicacion: "",
+  telefono: "",
+  kitchenId: 0, // debe ser un número
+});
+
+// 2. Función para manejar cambios en inputs
+const handleNewUserChange = (field: string, value: string) => {
+  setNewUserData((prev) => ({ ...prev, [field]: value }));
+};
+
+// 3. Función para hacer POST y añadir usuario
+const handleAddUser = async () => {
+  try {
+    const token = localStorage.getItem("token");
     const response = await fetch("http://localhost:8080/users", {
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`, // O según lo que tu backend espere
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        name: newUserData.nombre,
+        surname: newUserData.apellidos,
+        email: newUserData.email,
+        tel: newUserData.telefono,
+        password: newUserData.contrasena,
+        role: newUserData.rol,
+        status: newUserData.estado,
+        kitchenId: 2, // ajusta según tu backend
+      }),
     });
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}`);
     }
 
-    const data = await response.json();
-    setUsers(data);
+    const createdUser = await response.json();
+
+    // 4. Actualizar usuarios localmente para que se vea inmediatamente
+    setUsers((prev) => [...prev, createdUser]);
+
+    toast.success("Usuario añadido exitosamente");
+    closeModal2(); // Cierra modal
+
+    // Limpiar formulario
+    setNewUserData({
+      nombre: "",
+      apellidos:"",
+      email: "",
+      telefono: "",
+      contrasena: 1234,
+      rol: "",
+      estado: "",
+      ubicacion: "",
+       kitchenId: 2
+    });
   } catch (error) {
-    console.error("Error al cargar los usuarios:", error);
-    toast.error("No se pudieron cargar los usuarios");
+    console.error("Error al añadir usuario:", error);
+    toast.error("No se pudo añadir el usuario");
   }
 };
-fetchUsers();
 
-}, []);
 
 
   return (
@@ -208,7 +276,7 @@ fetchUsers();
               <img
                 width={80}
                 height={80}
-                src= "./images/user/user-01.jpg"
+                src="./images/user/user-01.jpg"
                 alt={user.name}
                 className="object-cover w-full h-full"
               />
@@ -377,17 +445,12 @@ fetchUsers();
                 <Select
                   options={optionsRol}
                   value={
-                    optionsRol.find(
-                      (option) => option.value === formData.rol
-                    ) || null
+                    optionsRol.find((opt) => opt.value === formData.rol) || null
                   }
                   onChange={(selectedOption) =>
-                    handleSelectChange(
-                      selectedOption ? selectedOption.value : "",
-                      "rol"
-                    )
+                    handleSelectChange(selectedOption?.value || "", "rol")
                   }
-                  placeholder="Selecciona una opcion"
+                  placeholder="Selecciona una opción"
                   className="dark:bg-dark-900"
                 />
               </div>
@@ -398,16 +461,13 @@ fetchUsers();
                   options={optionsEstado}
                   value={
                     optionsEstado.find(
-                      (option) => option.value === formData.estado
+                      (opt) => opt.value === formData.estado
                     ) || null
                   }
                   onChange={(selectedOption) =>
-                    handleSelectChange(
-                      selectedOption ? selectedOption.value : "",
-                      "estado"
-                    )
+                    handleSelectChange(selectedOption?.value || "", "estado")
                   }
-                  placeholder="Selecciona una opcion"
+                  placeholder="Selecciona una opción"
                   className="dark:bg-dark-900"
                 />
               </div>
@@ -432,8 +492,26 @@ fetchUsers();
             <div className="space-y-6">
               <div>
                 <Label htmlFor="inputOne">Nombre Completo</Label>
-                <Input type="text" id="inputOne" placeholder="Paco de Lucia" />
+                <Input type="text" id="inputOne" placeholder="Paco" value={newUserData.nombre}
+            onChange={(e) => handleNewUserChange("nombre", e.target.value)}/>
               </div>
+
+              <div>
+                <Label htmlFor="inputThree">Apellidos</Label>
+                <Input type="text" id="inputThree" placeholder="de Lucia" value={newUserData.apellidos}
+            onChange={(e) => handleNewUserChange("apellidos", e.target.value)}/>
+              </div>
+
+                  <div>
+  <Label htmlFor="inputTel">Teléfono</Label>
+  <Input
+    type="text"
+    id="inputTel"
+    placeholder="123456789"
+    value={newUserData.telefono}
+    onChange={(e) => handleNewUserChange("telefono", e.target.value)}
+  />
+</div>
 
               <div>
                 <Label>Email</Label>
@@ -442,6 +520,8 @@ fetchUsers();
                     placeholder="info@gmail.com"
                     type="text"
                     className="pl-[62px]"
+                    value={newUserData.email}
+              onChange={(e) => handleNewUserChange("email", e.target.value)}
                   />
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
                     <EnvelopeIcon className="size-6" />
@@ -455,40 +535,38 @@ fetchUsers();
                   type="text"
                   id="inputTwo"
                   placeholder="Nombre de la Cocina"
+                  value={newUserData.ubicacion}
+            onChange={(e) => handleNewUserChange("ubicacion", e.target.value)}
                 />
               </div>
 
               <div>
                 <Label>Rol</Label>
                 <Select
-                  options={optionsRol}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(
-                      selectedOption ? selectedOption.value : "",
-                      "rol"
-                    )
-                  }
-                  placeholder="Selecciona una opcion"
-                  className="dark:bg-dark-900"
-                />
+            options={optionsRol}
+            value={optionsRol.find((opt) => opt.value === newUserData.rol) || null}
+            onChange={(selectedOption) =>
+              handleNewUserChange("rol", selectedOption ? selectedOption.value : "")
+            }
+            placeholder="Selecciona una opción"
+            className="dark:bg-dark-900"
+          />
               </div>
 
               <div>
                 <Label>Estado</Label>
                 <Select
-                  options={optionsEstado}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(
-                      selectedOption ? selectedOption.value : "",
-                      "estado"
-                    )
-                  }
-                  placeholder="Selecciona una opcion"
-                  className="dark:bg-dark-900"
-                />
+            options={optionsEstado}
+            value={optionsEstado.find((opt) => opt.value === newUserData.estado) || null}
+            onChange={(selectedOption) =>
+              handleNewUserChange("estado", selectedOption ? selectedOption.value : "")
+            }
+            placeholder="Selecciona una opción"
+            className="dark:bg-dark-900"
+          />
               </div>
 
-              <Button size="md" onClick={handleSave}>
+              <Button size="md" onClick={handleAddUser}>
                 Guardar
               </Button>
             </div>
