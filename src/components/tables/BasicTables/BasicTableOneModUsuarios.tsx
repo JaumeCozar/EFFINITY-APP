@@ -221,16 +221,16 @@ fetchUsers();
               <span
                 className={
                   "block text-base font-medium mt-1 " +
-                  (user.role === "Admin"
+                  (user.role === "admin"
                     ? "text-purple-400"
-                    : user.role === "Operario"
+                    : user.role === "operario"
                     ? "text-blue-400"
-                    : user.role === "Comercial"
+                    : user.role === "comercial"
                     ? "text-yellow-400"
                     : "text-gray-500 dark:text-gray-400")
                 }
               >
-                {user.role}
+                {user.role.toLocaleUpperCase()}
               </span>
               <span className="block text-gray-500 text-base dark:text-gray-400 font-medium mt-2">
                 📧 {user.email}
