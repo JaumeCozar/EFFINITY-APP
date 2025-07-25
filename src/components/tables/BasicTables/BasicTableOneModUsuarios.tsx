@@ -30,6 +30,7 @@ interface User {
   status: string | null;
   imageUrl: string | null;
   kitchen: Kitchen | null;
+  kitchenId: string | number;
 }
 
 export default function BasicTableOneModUsuarios() {
@@ -40,22 +41,86 @@ export default function BasicTableOneModUsuarios() {
     closeModal: closeModal2,
   } = useModal();
 
-  const handleSave = () => {
-    console.log("Saving changes...");
+  const handleUpdateUser = async () => {
+  if (!selectedUser) return;
+
+  try {
+    const token = localStorage.getItem("token");
+
+    // Validaciones (opcional)
+    if (formData.telefono.length !== 9) {
+      toast.error("El número de teléfono debe tener 9 dígitos");
+      return;
+    }
+
+    // if (!formData.contrasena || formData.contrasena.length < 8) {
+    //   toast.error("La contraseña debe tener al menos 8 caracteres");
+    //   return;
+    // }
+
+    const response = await fetch(`http://localhost:8080/users/${selectedUser.id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.nombre,
+        surname: formData.apellido,
+        tel: formData.telefono,
+        email: formData.email,
+        password: formData.contrasena,
+        role: formData.rol,
+        status: formData.estado,
+        kitchenId: formData.kitchenId,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}`);
+    }
+
+    toast.success("Usuario actualizado correctamente");
+    setUsers((prevUsers) =>
+  prevUsers.map((user) =>
+    user.id === selectedUser?.id
+      ? { ...user, status: formData.estado }
+      : user
+  )
+);
+
+   
     closeModal();
-  };
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    toast.error("No se pudo actualizar el usuario");
+  }
+};
+
 
   // Estado para almacenar los datos del formulario
-  const [formData, setFormData] = useState({
-    nombre: "",
-    apellido: "",
-    telefono: "",
-    email: "",
-    contrasena: "",
-    rol: "",
-    estado: "",
-    ubicacion: "",
-  });
+  const [formData, setFormData] = useState<{
+  nombre: string;
+  apellido: string;
+  telefono: string;
+  email: string;
+  contrasena: string;
+  rol: string;
+  estado: string;
+  ubicacion: string;
+  kitchenId: string | number;
+}>({
+  nombre: "",
+  apellido: "",
+  telefono: "",
+  email: "",
+  contrasena: "",
+  rol: "",
+  estado: "",
+  ubicacion: "",
+  kitchenId: "", // este valor es string inicialmente
+});
+
 
   const optionsRol = [
     { value: "admin", label: "Admin" },
@@ -71,6 +136,7 @@ export default function BasicTableOneModUsuarios() {
 
   // Esta función maneja el cambio de selección en el select de rol y estado
   const handleSelectChange = (value: string, field: string) => {
+    console.log(`Cambio en ${field}:`, value); // Debug JAGO
     setFormData((prevState) => ({
       ...prevState,
       [field]: value, // Actualiza el campo correspondiente (rol o estado)
@@ -90,6 +156,7 @@ export default function BasicTableOneModUsuarios() {
         rol: selectedUser.role || "",
         estado: selectedUser.status || "",
         ubicacion: selectedUser.kitchen?.name || "No especificado",
+        kitchenId: selectedUser.kitchen?.id || "",
       });
     }
   }, [selectedUser]);
@@ -165,8 +232,8 @@ export default function BasicTableOneModUsuarios() {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
+
+const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token"); // o desde cookies
 
@@ -188,6 +255,9 @@ export default function BasicTableOneModUsuarios() {
         toast.error("No se pudieron cargar los usuarios");
       }
     };
+
+
+  useEffect(() => {
     fetchUsers();
   }, []);
 
@@ -231,6 +301,23 @@ export default function BasicTableOneModUsuarios() {
   }
 };
 
+const handleFormDataChange = (field: string, value: string) => {
+  if (field === "telefono") {
+    // Solo números y máximo 9 caracteres
+    const cleaned = value.replace(/\D/g, "").slice(0, 9);
+    setFormData((prev) => ({
+      ...prev,
+      [field]: cleaned,
+    }));
+  } else {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: field === "kitchenId" ? Number(value) : value,
+    }));
+  }
+};
+
+
 
   // 3. Función para hacer POST y añadir usuario
   const handleAddUser = async () => {
@@ -269,10 +356,10 @@ export default function BasicTableOneModUsuarios() {
       });
 
 
-      const createdUser = await response.json();
+      // const createdUser = await response.json();
 
-      // 4. Actualizar usuarios localmente para que se vea inmediatamente
-      setUsers((prev) => [...prev, createdUser]);
+      // Recargar usuarios para reflejar correctamente kitchen.name y status
+await fetchUsers();
 
       toast.success("Usuario añadido exitosamente");
       
@@ -293,6 +380,7 @@ export default function BasicTableOneModUsuarios() {
       console.error("Error al añadir usuario:", error);
       toast.error("No se pudo añadir el usuario");
     }
+    
     closeModal2(); // Cierra modal
   };
 
@@ -325,6 +413,7 @@ export default function BasicTableOneModUsuarios() {
   }));
 
   const [showPassword, setShowPassword] = useState(false);
+
 
   return (
     <>
@@ -506,6 +595,7 @@ export default function BasicTableOneModUsuarios() {
                   id="inputOne"
                   placeholder="Paco de Lucia"
                   value={formData.nombre}
+                  onChange={(e) => handleFormDataChange("nombre", e.target.value)}
                 />
               </div>
 
@@ -517,7 +607,7 @@ export default function BasicTableOneModUsuarios() {
                   placeholder="de Lucia"
                   value={formData.apellido}
                   onChange={(e) =>
-                    handleNewUserChange("apellidos", e.target.value)
+                    handleFormDataChange("apellido", e.target.value)
                   }
                 />
               </div>
@@ -534,7 +624,7 @@ export default function BasicTableOneModUsuarios() {
                     placeholder="616 565 453"
                     value={formData.telefono}
                     onChange={(e) =>
-                      handleNewUserChange("telefono", e.target.value)
+                      handleFormDataChange("telefono", e.target.value)
                     }
                     className="pl-12" // padding-left para que no se solape con el prefijo
                   />
@@ -549,45 +639,12 @@ export default function BasicTableOneModUsuarios() {
                     type="text"
                     className="pl-[62px]"
                     value={formData.email}
+                    onChange={(e) => handleFormDataChange("email", e.target.value)}
                   />
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
                     <EnvelopeIcon className="size-6" />
                   </span>
                 </div>
-              </div>
-
-              <div>
-                <Label>Contraseña</Label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Ingrese su contraseña"
-                    value={formData.contrasena}
-                    onChange={(e) =>
-                      handleNewUserChange("contrasena", e.target.value)
-                    }
-                  />
-                  <button
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                  >
-                    {showPassword ? (
-                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                    ) : (
-                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="inputTwo">Ubicacion</Label>
-                <Input
-                  type="text"
-                  id="inputTwo"
-                  placeholder="Nombre de la Cocina"
-                  value={formData.ubicacion}
-                />
               </div>
 
               <div>
@@ -625,24 +682,24 @@ export default function BasicTableOneModUsuarios() {
               <div>
                 <Label>Ubicacion</Label>
                 <Select
-                  options={kitchenOptions}
-                  value={
-                    kitchenOptions.find(
-                      (opt) => opt.value === newUserData.kitchenId
-                    ) || null
-                  }
-                  onChange={(selectedOption) =>
-                    handleNewUserChange(
-                      "kitchenId",
-                      selectedOption ? String(selectedOption.value) : ""
-                    )
-                  }
-                  placeholder="Selecciona una cocina"
-                  className="dark:bg-dark-900"
-                />
+  options={kitchenOptions}
+  value={kitchenOptions.find((opt) => opt.value === formData.kitchenId) || null}
+  onChange={(selectedOption) => {
+    setFormData(prev => ({
+      ...prev,
+      kitchenId: selectedOption?.value || "",
+      ubicacion: selectedOption?.label || "No especificado",
+    }));
+  }}
+  placeholder="Selecciona una cocina"
+  className="dark:bg-dark-900"
+/>
+
+
+
               </div>
 
-              <Button size="md" onClick={handleSave}>
+              <Button size="md" onClick={handleUpdateUser}>
                 Guardar
               </Button>
             </div>
@@ -789,21 +846,19 @@ export default function BasicTableOneModUsuarios() {
               <div>
                 <Label>Ubicacion</Label>
                 <Select
-                  options={kitchenOptions}
-                  value={
-                    kitchenOptions.find(
-                      (opt) => opt.value === newUserData.kitchenId
-                    ) || null
-                  }
-                  onChange={(selectedOption) =>
-                    handleNewUserChange(
-                      "kitchenId",
-                      selectedOption ? String(selectedOption.value) : ""
-                    )
-                  }
-                  placeholder="Selecciona una cocina"
-                  className="dark:bg-dark-900"
-                />
+  options={kitchenOptions}
+  value={kitchenOptions.find((opt) => opt.value === formData.kitchenId) || null}
+  onChange={(selectedOption) => {
+    setFormData(prev => ({
+      ...prev,
+      kitchenId: selectedOption?.value || "",
+      ubicacion: selectedOption?.label || "No especificado",
+    }));
+  }}
+  placeholder="Selecciona una cocina"
+  className="dark:bg-dark-900"
+/>
+
               </div>
 
               <Button size="md" onClick={handleAddUser}>
