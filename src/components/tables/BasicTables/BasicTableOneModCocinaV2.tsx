@@ -27,10 +27,10 @@ export default function BasicTableOneModCocinaV2() {
     closeModal: closeModal2,
   } = useModal();
 
-  const handleSave = () => {
-    console.log("Saving changes...");
-    closeModal();
-  };
+  // const handleSave = () => {
+  //   console.log("Saving changes...");
+  //   closeModal();
+  // };
 
   // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
@@ -49,26 +49,48 @@ export default function BasicTableOneModCocinaV2() {
     buttonsStyling: false,
   });
 
-  const handleDelete = () => {
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          toast.info("Cocina eliminada exitosamente");
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info("No se ha borrado la cocina");
+  const handleDeleteKitchen = async (id: number) => {
+  const token = localStorage.getItem("token");
 
+  swalWithBootstrapButtons
+    .fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    })
+    .then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`http://localhost:8080/kitchens/${id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error ${response.status}`);
+          }
+
+          // Actualizar el estado local para eliminar la cocina
+          setKitchens((prev) => prev.filter((k) => k.id !== id));
+
+          toast.success("Cocina eliminada exitosamente");
+        } catch (error) {
+          console.error("Error al eliminar la cocina:", error);
+          toast.error("No se pudo eliminar la cocina");
         }
-      });
-  };
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        toast.info("Eliminación cancelada");
+      }
+    });
+};
+
 
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
@@ -121,6 +143,75 @@ export default function BasicTableOneModCocinaV2() {
   fetchKitchens();
   
   }, []);
+
+  const handleAddKitchen = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("http://localhost:8080/kitchens", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.nombre,
+        ubi: formData.ubicacion,
+        imageUrl: null, // Puedes manejar esto luego
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}`);
+    }
+
+    const newKitchen = await response.json();
+
+    toast.success("Cocina añadida exitosamente");
+    setKitchens((prev) => [...prev, newKitchen]);
+    closeModal2();
+    setFormData({ nombre: "", ubicacion: "" });
+  } catch (error) {
+    console.error("Error al añadir la cocina:", error);
+    toast.error("No se pudo añadir la cocina");
+  }
+};
+
+const handleUpdateKitchen = async () => {
+  if (!selectedKitchen) return;
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`http://localhost:8080/kitchens/${selectedKitchen.id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.nombre,
+        ubi: formData.ubicacion,
+        imageUrl: selectedKitchen.imageUrl || null,
+      }),
+    });
+
+    if (!response.ok) throw new Error("Error al actualizar");
+
+    toast.success("Cocina actualizada exitosamente");
+
+    // Actualiza la lista local
+    setKitchens((prev) =>
+      prev.map((k) => (k.id === selectedKitchen.id ? { ...k, name: formData.nombre, ubi: formData.ubicacion } : k))
+    );
+
+    closeModal();
+  } catch (error) {
+    console.error(error);
+    toast.error("No se pudo actualizar la cocina");
+  }
+};
+
 
   return (
     <>
@@ -189,8 +280,10 @@ export default function BasicTableOneModCocinaV2() {
                 <div className="flex w-1/2 xl:flex-col gap-2">
                 <div className="flex w-1/2 justify-center  rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 xl:w-auto">
                   <button
-                    onClick={openModal}
-                    //className="flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                    onClick={() => {
+    setSelectedKitchen(kitchen); // ← Aquí se setea la cocina actual
+    openModal();
+  }}
                   >
                     <svg
                       className="fill-current"
@@ -212,7 +305,7 @@ export default function BasicTableOneModCocinaV2() {
 
                 <div className="flex w-1/2 justify-center  rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200  xl:w-auto">
                   <button
-                    onClick={handleDelete}
+                    onClick={() => handleDeleteKitchen(kitchen.id)}
                     //className="flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
                   >
                     <svg
@@ -270,6 +363,9 @@ export default function BasicTableOneModCocinaV2() {
                   id="inputOne"
                   placeholder="Tarragona-Reus-Salou-etc..."
                   value={formData.nombre}
+                  onChange={(e) =>
+    setFormData((prev) => ({ ...prev, nombre: e.target.value }))
+  }
                 />
               </div>
 
@@ -280,10 +376,13 @@ export default function BasicTableOneModCocinaV2() {
                   id="inputTwo"
                   placeholder="Calle Tarragona 555"
                   value={formData.ubicacion}
+                  onChange={(e) =>
+    setFormData((prev) => ({ ...prev, ubicacion: e.target.value }))
+  }
                 />
               </div>
-
-              <Button size="md" onClick={handleSave}>
+              
+              <Button size="md" onClick={handleUpdateKitchen}>
                 Guardar
               </Button>
             </div>
@@ -307,6 +406,9 @@ export default function BasicTableOneModCocinaV2() {
                   type="text"
                   id="inputOne"
                   placeholder="Tarragona-Reus-Salou-etc..."
+                  onChange={(e) =>
+    setFormData((prev) => ({ ...prev, nombre: e.target.value }))
+  }
                 />
               </div>
 
@@ -316,10 +418,13 @@ export default function BasicTableOneModCocinaV2() {
                   type="text"
                   id="inputTwo"
                   placeholder="Calle Tarragona 555"
+                  onChange={(e) =>
+    setFormData((prev) => ({ ...prev, ubicacion: e.target.value }))
+  }
                 />
               </div>
 
-              <Button size="md" onClick={handleSave}>
+              <Button size="md" onClick={handleAddKitchen}>
                 Guardar
               </Button>
             </div>
