@@ -81,6 +81,10 @@ export default function BasicTableOneModUsuarios() {
     }
 
     toast.success("Usuario actualizado correctamente");
+
+    // Recargar lista de usuarios
+    await fetchUsers();
+
     setUsers((prevUsers) =>
   prevUsers.map((user) =>
     user.id === selectedUser?.id
