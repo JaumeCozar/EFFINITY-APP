@@ -107,7 +107,6 @@ export default function BasicTableOneModUsuarios() {
   contrasena: string;
   rol: string;
   estado: string;
-  ubicacion: string;
   kitchenId: string | number;
 }>({
   nombre: "",
@@ -117,7 +116,7 @@ export default function BasicTableOneModUsuarios() {
   contrasena: "",
   rol: "",
   estado: "",
-  ubicacion: "",
+  
   kitchenId: "", // este valor es string inicialmente
 });
 
@@ -155,7 +154,7 @@ export default function BasicTableOneModUsuarios() {
         contrasena: selectedUser.password, // o mantenerla si decides usar contraseñas
         rol: selectedUser.role || "",
         estado: selectedUser.status || "",
-        ubicacion: selectedUser.kitchen?.name || "No especificado",
+       
         kitchenId: selectedUser.kitchen?.id || "",
       });
     }
@@ -269,9 +268,8 @@ const fetchUsers = async () => {
     contrasena: number | string;
     rol: string;
     estado: string;
-    ubicacion: string;
     telefono: string;
-    kitchenId: number | string;
+    kitchenId: number | "";
   }>({
     nombre: "",
     apellidos: "",
@@ -280,15 +278,13 @@ const fetchUsers = async () => {
     contrasena: "",
     rol: "",
     estado: "",
-    ubicacion: "",
     kitchenId: "",
   });
 
   // 2. Función para manejar cambios en inputs
-  const handleNewUserChange = (field: string, value: string) => {
+ const handleNewUserChange = (field: string, value: string | number) => {
   if (field === "telefono") {
-    // Permitir solo números y limitar a 9 caracteres
-    const cleaned = value.replace(/\D/g, "").slice(0, 9);
+    const cleaned = value.toString().replace(/\D/g, "").slice(0, 9);
     setNewUserData((prev) => ({
       ...prev,
       [field]: cleaned,
@@ -300,6 +296,7 @@ const fetchUsers = async () => {
     }));
   }
 };
+
 
 const handleFormDataChange = (field: string, value: string) => {
   if (field === "telefono") {
@@ -373,7 +370,7 @@ await fetchUsers();
         contrasena: "",
         rol: "",
         estado: "",
-        ubicacion: "",
+        
         kitchenId: "",
       });
     } catch (error) {
@@ -682,18 +679,18 @@ await fetchUsers();
               <div>
                 <Label>Ubicacion</Label>
                 <Select
-  options={kitchenOptions}
-  value={kitchenOptions.find((opt) => opt.value === formData.kitchenId) || null}
-  onChange={(selectedOption) => {
-    setFormData(prev => ({
-      ...prev,
-      kitchenId: selectedOption?.value || "",
-      ubicacion: selectedOption?.label || "No especificado",
-    }));
-  }}
-  placeholder="Selecciona una cocina"
-  className="dark:bg-dark-900"
-/>
+    options={kitchenOptions}
+    value={kitchenOptions.find((opt) => opt.value === formData.kitchenId) || null}
+    onChange={(selectedOption) => {
+  if (selectedOption) {
+    handleFormDataChange("kitchenId", selectedOption.value.toString());
+  } else {
+    handleFormDataChange("kitchenId", ""); // o algún valor por defecto
+  }
+}}
+    placeholder="Selecciona una cocina"
+    className="dark:bg-dark-900"
+  />
 
 
 
@@ -847,17 +844,18 @@ await fetchUsers();
                 <Label>Ubicacion</Label>
                 <Select
   options={kitchenOptions}
-  value={kitchenOptions.find((opt) => opt.value === formData.kitchenId) || null}
+  value={
+    kitchenOptions.find((opt) => opt.value === newUserData.kitchenId) || null
+  }
   onChange={(selectedOption) => {
-    setFormData(prev => ({
-      ...prev,
-      kitchenId: selectedOption?.value || "",
-      ubicacion: selectedOption?.label || "No especificado",
-    }));
+    handleNewUserChange("kitchenId", selectedOption?.value ?? "");
   }}
   placeholder="Selecciona una cocina"
   className="dark:bg-dark-900"
 />
+
+
+
 
               </div>
 
