@@ -75,29 +75,6 @@ export default function DefaultInputsModifUsuarios() {
           </div>
         </div>
 
-        {/*
-        <div>
-          <Label>Contraseña</Label>
-          <div className="relative">
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder=""
-              value={formData.contrasena}
-            />
-            <button
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-            >
-              {showPassword ? (
-                <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-              ) : (
-                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-              )}
-            </button>
-          </div>
-        </div>
-        */}
-
         <div>
           <Label htmlFor="inputTwo">Ubicacion</Label>
           <Input type="text" id="inputTwo" placeholder="Nombre de la Cocina" value={formData.ubicacion}/>

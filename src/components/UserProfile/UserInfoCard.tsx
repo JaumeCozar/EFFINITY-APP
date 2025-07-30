@@ -4,6 +4,9 @@ import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
+
+
 
 export default function UserInfoCard() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -18,6 +21,71 @@ export default function UserInfoCard() {
   };
 
 
+  interface UserInfo {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    tel: string | null;
+    role: string;
+    imageUrl: string | null;
+  }
+  
+    // Estado para almacenar los datos del formulario
+    const [formData, setFormData] = useState({
+      name: "",
+      surname: "",
+      email: "",
+      tel: "",
+      role: ""
+    });
+  
+  
+  const [selectedUserInfo, setSelectedUserInfo] = useState<UserInfo | null>(null);
+    
+      useEffect(() => {
+      if (selectedUserInfo) {
+        setFormData({
+          name: `${selectedUserInfo.name}`,
+          surname: selectedUserInfo.surname,
+          email: selectedUserInfo.email,
+          tel: selectedUserInfo.tel || "No especificado",
+          role: selectedUserInfo.role
+        });
+      }
+    }, [selectedUserInfo]);
+  
+  const [userinfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  
+  
+     
+       useEffect(() => {
+       const fetchUserInfo = async () => {
+       try {
+         const token = localStorage.getItem("token"); // o desde cookies
+     
+         const response = await fetch("http://localhost:8080/users/me", {
+           headers: {
+             Authorization: `Bearer ${token}`, // O según lo que tu backend espere
+             "Content-Type": "application/json",
+           },
+         });
+     
+         if (!response.ok) {
+           throw new Error(`Error ${response.status}`);
+         }
+     
+         const data = await response.json();
+         setUserInfo(data);
+       } catch (error) {
+         console.error("Error al cargar los usuarios:", error);
+         toast.error("No se pudieron cargar los usuarios");
+       }
+     };
+     fetchUserInfo();
+     
+     }, []);
 
   
   return (
@@ -37,7 +105,7 @@ export default function UserInfoCard() {
                   Nombre
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [Musharof]
+                  {userinfo?.name}
                 </p>
               </div>
 
@@ -46,7 +114,7 @@ export default function UserInfoCard() {
                   Apellido
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [Chowdhury]
+                  {userinfo?.surname}
                 </p>
               </div>
 
@@ -55,7 +123,7 @@ export default function UserInfoCard() {
                   Correo
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [randomuser@pimjo.com]
+                  {userinfo?.email}
                 </p>
               </div>
 
@@ -64,7 +132,7 @@ export default function UserInfoCard() {
                   Telf
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [+09 363 398 46]
+                  {userinfo?.tel|| "No especificado"}
                 </p>
               </div>
 
@@ -73,7 +141,7 @@ export default function UserInfoCard() {
                   Rol
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  [Team Manager]
+                  {userinfo?.role}
                 </p>
               </div>
             </div>

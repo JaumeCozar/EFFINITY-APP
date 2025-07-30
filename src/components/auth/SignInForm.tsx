@@ -51,10 +51,12 @@ export default function SignInForm() {
         // Redirección según el rol usando rutas centralizadas
         const route = DASHBOARD_ROUTES[role as keyof typeof DASHBOARD_ROUTES] || "/";
         navigate(route);
-      } catch (err) {
-        alert("Email o contraseña incorrectos");
+      } catch (err: any) {
+        const errorMsg = err?.response?.data?.message || "Error desconocido";
+        alert(errorMsg);
       }
-    };
+
+  };
   
   // FIN Jordi 30/06/2025
   return (

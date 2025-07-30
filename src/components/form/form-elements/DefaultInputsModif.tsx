@@ -5,8 +5,6 @@ import Input from "../input/InputField";
 import Select from "../Select";
 import PhoneInput from "../group-input/PhoneInput";
 import { EnvelopeIcon } from "../../../icons";
-
-// import DatePicker from "../date-picker.tsx";
 import Button from "../../ui/button/Button.tsx";
 
 export default function DefaultInputsModif() {
@@ -67,11 +65,6 @@ export default function DefaultInputsModif() {
           />
         </div>
 
-        {/* <div>
-          <Label htmlFor="inputTwo">NIF</Label>
-          <Input type="text" id="inputTwo" placeholder="Y66688855M" />
-        </div> */}
-
         <div>
           <Label>Telefono</Label>
           <PhoneInput
@@ -95,18 +88,6 @@ export default function DefaultInputsModif() {
             </span>
           </div>
         </div>
-
-        {/* <div>
-          <DatePicker
-            id="date-picker"
-            label="Fecha de Alta"
-            placeholder="Selecciona una fecha"
-            onChange={(dates, currentDateString) => {
-              // Handle your logic
-              console.log({ dates, currentDateString });
-            }}
-          />
-        </div> */}
 
         <div>
           <Label>Sector</Label>

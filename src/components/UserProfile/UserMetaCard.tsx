@@ -4,6 +4,7 @@ import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import {toast } from "react-toastify";
+import { useState, useEffect } from "react";
 
 export default function UserMetaCard() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -15,6 +16,62 @@ export default function UserMetaCard() {
     }, 100);
     closeModal();
   };
+
+interface UserMeta {
+  id: number;
+  name: string;
+  surname: string;
+  imageUrl: string | null;
+}
+
+  // Estado para almacenar los datos del formulario
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+  });
+
+
+const [selectedUserMeta, setSelectedUserMeta] = useState<UserMeta | null>(null);
+  
+    useEffect(() => {
+    if (selectedUserMeta) {
+      setFormData({
+        name: `${selectedUserMeta.name}`,
+        surname: selectedUserMeta.surname || "No especificado",
+      });
+    }
+  }, [selectedUserMeta]);
+
+const [usermeta, setUserMeta] = useState<UserMeta | null>(null);
+
+
+   
+     useEffect(() => {
+     const fetchUserMeta = async () => {
+     try {
+       const token = localStorage.getItem("token"); // o desde cookies
+   
+       const response = await fetch("http://localhost:8080/users/me", {
+         headers: {
+           Authorization: `Bearer ${token}`, // O según lo que tu backend espere
+           "Content-Type": "application/json",
+         },
+       });
+   
+       if (!response.ok) {
+         throw new Error(`Error ${response.status}`);
+       }
+   
+       const data = await response.json();
+       setUserMeta(data);
+     } catch (error) {
+       console.error("Error al cargar los usuarios:", error);
+       toast.error("No se pudieron cargar los usuarios");
+     }
+   };
+   fetchUserMeta();
+   
+   }, []);
   return (
     <>
       
@@ -27,15 +84,11 @@ export default function UserMetaCard() {
             </div>
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                [Musharof Chowdhury]
+                {usermeta?.name}
               </h4>
               <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  [Gerente de equipo]
-                </p>
-                <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  [Arizona, Estados Unidos]
+                  {usermeta?.surname}
                 </p>
               </div>
             </div>
