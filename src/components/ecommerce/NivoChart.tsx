@@ -1,104 +1,126 @@
-import { ResponsiveBar } from '@nivo/bar'
-import data from './NivoChart.json'
-import { useTheme } from '../../context/ThemeContext'
+import { ResponsiveBar } from '@nivo/bar';
 import { useEffect, useState } from 'react';
 
 export const MyBar = () => {
-  const { theme } = useTheme(); // 'light' o 'dark'
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null); // State to store any fetch errors
 
-  // Hook para detectar el ancho de la ventana
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 1200);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/api/waste-data');
 
-  // Colores según el tema
-  const axisColor = theme === 'dark' ? '#e5e7eb' : '#333';
-  const legendTextColor = theme === 'dark' ? '#e5e7eb' : '#333';
-  const labelTextColor = '#000';
-  const gridColor = theme === 'dark' ? '#444' : '#e5e7eb';
-  const background = theme === 'dark' ? '#101828' : '#fff';
+        if (!res.ok) {
+          // If the response is not OK (e.g., 404, 500), throw an error
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const rawData = await res.json();
+
+        // --- Data Transformation Logic ---
+        const grouped = rawData.reduce((acc, item) => {
+          const { month, food, total_kg } = item;
+          let monthEntry = acc.find(m => m.month === month);
+          if (!monthEntry) {
+            monthEntry = { month };
+            acc.push(monthEntry);
+          }
+          monthEntry[food] = total_kg; // Assign the total_kg to the food item for the current month
+          return acc;
+        }, []);
+
+        // Define all possible food items to ensure all keys are present for Nivo
+        const allFoods = ["hot dog", "burger", "sandwich", "kebab", "fries", "donut"];
+        grouped.forEach(monthEntry => {
+          allFoods.forEach(food => {
+            // If a food item is missing for a month, initialize its value to 0
+            if (!(food in monthEntry)) {
+              monthEntry[food] = 0;
+            }
+          });
+        });
+        // --- End Data Transformation Logic ---
+
+        setData(grouped);
+      } catch (err) {
+        console.error("Failed to fetch waste data:", err);
+        setError("Failed to load data. Please check the server connection and data format."); // Set user-friendly error message
+      }
+    };
+
+    fetchData();
+  }, []); // The empty dependency array ensures this effect runs only once on mount
+
+  if (error) {
+    return <div style={{ color: 'red', textAlign: 'center', padding: '20px' }}>Error: {error}</div>;
+  }
+
+  // You can add a loading state here if the data fetch takes time
+  if (data.length === 0 && !error) {
+    return <div style={{ textAlign: 'center', padding: '20px' }}>Loading data...</div>;
+  }
 
   return (
-    <div
-      className="w-full border border-gray-200 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800"
-      style={{ zIndex: 0, position: 'relative', height: '40vw', minHeight: 200, maxHeight: 500 }}
-    >
+    <div style={{ height: 400 }}>
       <ResponsiveBar
         data={data}
-        keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-        indexBy="month"
+        keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]} // These keys must match the transformed data properties
+        indexBy="month" // The property used for the X-axis categories
+        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        padding={0.3}
+        valueScale={{ type: 'linear' }}
+        indexScale={{ type: 'band', round: true }}
+        colors={{ scheme: 'nivo' }} // Color scheme for the bars
+        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+        axisTop={null} // No axis on top
+        axisRight={null} // No axis on right
+        axisBottom={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: 'Month',
+          legendPosition: 'middle',
+          legendOffset: 32
+        }}
+        axisLeft={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: 'Quantity (kg)', // Label for the Y-axis
+          legendPosition: 'middle',
+          legendOffset: -40
+        }}
         labelSkipWidth={12}
         labelSkipHeight={12}
-        labelTextColor={labelTextColor}
+        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         legends={[
           {
             dataFrom: 'keys',
             anchor: 'bottom-right',
             direction: 'column',
+            justify: false,
             translateX: 120,
-            itemsSpacing: 3,
+            translateY: 0,
+            itemsSpacing: 2,
             itemWidth: 100,
-            itemHeight: 16,
-            itemTextColor: legendTextColor,
-            symbolSize: 16,
+            itemHeight: 20,
+            itemDirection: 'left-to-right',
+            itemOpacity: 0.85,
+            symbolSize: 20,
             effects: [
               {
                 on: 'hover',
                 style: {
-                  itemTextColor: theme === 'dark' ? '#fff' : '#000'
+                  itemOpacity: 1
                 }
               }
             ]
           }
         ]}
-        axisBottom={{
-          legend: '',
-          legendOffset: 32,
-          tickPadding: 5,
-          tickSize: 5,
-          tickRotation: isSmallScreen ? -90 : 0,
-          tickValues: 'every 1',
-        }}
-        axisLeft={{
-          legend: 'food',
-          legendOffset: -40,
-          tickPadding: 5,
-          tickSize: 5,
-        }}
-        margin={{
-          top: 50,
-          right: isSmallScreen ? 20 : 130,
-          bottom: isSmallScreen ? 90 : 50,
-          left: isSmallScreen ? 40 : 60
-        }}
-        theme={{
-          axis: {
-            ticks: {
-              line: { stroke: axisColor },
-              text: { fill: axisColor, fontSize: isSmallScreen ? 10 : 12 }
-            },
-            legend: {
-              text: { fill: axisColor, fontSize: isSmallScreen ? 10 : 12 }
-            }
-          },
-          legends: {
-            text: { fill: legendTextColor, fontSize: isSmallScreen ? 10 : 12 }
-          },
-          labels: {
-            text: { fill: labelTextColor, fontSize: isSmallScreen ? 10 : 12 }
-          },
-          grid: {
-            line: { stroke: gridColor }
-          },
-          background
-        }}
+        animate={true}
+        motionStiffness={90}
+        motionDamping={15}
       />
     </div>
-  )
-}
+  );
+};
