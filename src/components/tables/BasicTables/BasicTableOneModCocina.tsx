@@ -53,7 +53,9 @@ export default function BasicTableOneModCocina() {
 
   const handleSelectChange = (value: string, field: string) => {
     console.log(`Campo: ${field}, Valor seleccionado: ${value}`);
-    // Aquí puedes actualizar el estado según el campo (rol o estado)
+    if (field === "estado") {
+      setOrdenAlimentos(value);
+    }
   };
 
   const { isOpen, openModal, closeModal } = useModal();
@@ -141,6 +143,12 @@ export default function BasicTableOneModCocina() {
 
   // Estado para el filtro de alimentos por tipo
   const [alimentosFiltrados, setAlimentosFiltrados] = useState<Alimento[]>([]);
+  
+  // Estado para el orden de los alimentos
+  const [ordenAlimentos, setOrdenAlimentos] = useState<string>("Ascendente");
+  
+  // Estado para el término de búsqueda
+  const [terminoBusqueda, setTerminoBusqueda] = useState<string>("");
 
   // 3. Fetch de alimentos
   useEffect(() => {
@@ -172,17 +180,40 @@ export default function BasicTableOneModCocina() {
     fetchAlimentos();
   }, []);
 
-  // Efecto para filtrar alimentos cuando cambie el tipo seleccionado
+  // Efecto para filtrar, buscar y ordenar alimentos cuando cambie el tipo seleccionado, el orden o el término de búsqueda
   useEffect(() => {
+    let alimentosProcesados: Alimento[] = [];
+    
     if (selectedTipo === null) {
       // Si no hay tipo seleccionado, mostrar todos los alimentos
-      setAlimentosFiltrados(alimentos);
+      alimentosProcesados = [...alimentos];
     } else {
       // Filtrar alimentos por el tipo seleccionado
-      const alimentosDelTipo = alimentos.filter(alimento => alimento.foodTypeId === selectedTipo);
-      setAlimentosFiltrados(alimentosDelTipo);
+      alimentosProcesados = alimentos.filter(alimento => alimento.foodTypeId === selectedTipo);
     }
-  }, [selectedTipo, alimentos]);
+    
+    // Aplicar filtro de búsqueda por nombre
+    if (terminoBusqueda.trim() !== "") {
+      const termino = terminoBusqueda.toLowerCase().trim();
+      alimentosProcesados = alimentosProcesados.filter(alimento => 
+        alimento.name.toLowerCase().includes(termino)
+      );
+    }
+    
+    // Aplicar ordenamiento por nombre
+    alimentosProcesados.sort((a, b) => {
+      const nombreA = a.name.toLowerCase();
+      const nombreB = b.name.toLowerCase();
+      
+      if (ordenAlimentos === "Ascendente") {
+        return nombreA.localeCompare(nombreB);
+      } else {
+        return nombreB.localeCompare(nombreA);
+      }
+    });
+    
+    setAlimentosFiltrados(alimentosProcesados);
+  }, [selectedTipo, alimentos, ordenAlimentos, terminoBusqueda]);
 
   // Fetch de tipos de alimento
   useEffect(() => {
@@ -389,12 +420,14 @@ export default function BasicTableOneModCocina() {
                   />
                 </svg>
               </span>
-              <Input
-                type="text"
-                id="inputOne"
-                placeholder="Buscar"
-                className="dark:bg-dark-900 pl-12 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30"
-              />
+                             <Input
+                 type="text"
+                 id="inputOne"
+                 placeholder="Buscar"
+                 value={terminoBusqueda}
+                 onChange={(e) => setTerminoBusqueda(e.target.value)}
+                 className="dark:bg-dark-900 pl-12 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30"
+               />
             </div>
             <div className="flex-1">
               <Select
