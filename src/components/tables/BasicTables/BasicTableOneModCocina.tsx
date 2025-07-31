@@ -270,12 +270,12 @@ export default function BasicTableOneModCocina() {
     key={tipo.id}
     className={`relative
       ${selectedTipo === tipo.id
-        ? "outline-2 outline-green-500 border-green-500 bg-green-100 text-black"
+        ? "outline-2 outline-gray-200 border-brand-500 bg-brand-300 text-black"
         : " bg-gray-100 dark:bg-gray-400 border border-gray-300 dark:border-black text-black"}
       rounded-xl px-4 py-4 text-sm font-medium shadow-theme-xs
       cursor-pointer w-100 h-38 flex flex-col justify-between items-center text-center
-      hover:outline-2 hover:outline-green-400 hover:bg-green-100 dark:hover:bg-green-100
-      hover:border-green-400 hover:shadow hover:text-black`}
+      hover:outline-2 hover:outline-gray-200 hover:bg-brand-300 dark:hover:bg-green-100
+      hover:border-gray-200 hover:shadow hover:text-black`}
   >
     <input
       type="checkbox"
@@ -285,14 +285,14 @@ export default function BasicTableOneModCocina() {
     />
 
                 {/* Botones de acción arriba */}
-                <div className="flex justify-end gap-2 w-full">
+                <div className="flex justify-center gap-2 w-full">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       console.log("Editar tipo:", tipo.name);
                     }}
-                    className="flex flex-1 items-center justify-center rounded-full px-4 py-2 text-sm font-medium border border-gray-300 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.05] text-gray-950"
+                    className="flex-1 flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium border border-gray-300 bg-gray-50 hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.05] text-gray-950"
                     title="Editar"
                   >
                     <svg
@@ -318,7 +318,7 @@ export default function BasicTableOneModCocina() {
                       e.stopPropagation();
                       console.log("Eliminar tipo:", tipo.name);
                     }}
-                    className="rounded-full px-4 py-2 text-sm font-medium border border-red-300 bg-white hover:bg-red-50 text-red-600 dark:border-red-700 dark:bg-gray-800 dark:hover:bg-white/[0.05]"
+                    className="flex-1 flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium border border-red-300 bg-white hover:bg-red-50 text-red-600 dark:border-red-700 dark:bg-gray-800 dark:hover:bg-white/[0.05]"
                     title="Eliminar"
                   >
                     <svg
