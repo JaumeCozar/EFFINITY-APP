@@ -26,7 +26,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: " Panel de control",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    subItems: [{ name: "Intro", path: "/", pro: false }],
   },
   {
     icon: <CalenderIcon />,
@@ -56,7 +56,7 @@ const navItems: NavItem[] = [
               // { name: "Tablas básicas", path: "/basic-tables", pro: false },
               { name: "Usuarios", path: "/table-usuarios", pro: false },
               { name: "Cocinas", path: "/table-cocinas", pro: false },
-              { name: "Cocinas V1", path: "/table-cocinasV1", pro: false }
+              // { name: "Cocinas V1", path: "/table-cocinasV1", pro: false }
     ],
   },
 //{ name: "Basic Tables", path: "/basic-tables", pro: false },

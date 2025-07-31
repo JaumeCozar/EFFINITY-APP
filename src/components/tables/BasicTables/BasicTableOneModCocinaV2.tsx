@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../hooks/useModal";
 import { Modal } from "../../ui/modal";
 import Button from "../../ui/button/Button";
@@ -20,6 +21,7 @@ interface Kitchen {
 }
 
 export default function BasicTableOneModCocinaV2() {
+  const navigate = useNavigate();
   const { isOpen, openModal, closeModal } = useModal();
   const {
     isOpen: isOpen2,
@@ -271,7 +273,7 @@ const handleUpdateKitchen = async () => {
               <div className="flex flex-col items-center xl:flex-row xl:items-center xl:justify-between gap-2">
                 <div className="w-1/2 flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
                   <button
-                    onClick={openModal}
+                    onClick={() => navigate('/table-cocinasV1')}
                     //className="flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
                   >
                     Alimentos
