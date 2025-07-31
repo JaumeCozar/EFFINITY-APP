@@ -15,17 +15,7 @@ const keys1 = [
   "Cereales y Legumbres"
 ]
 
-const keys2 = [
-  "Pasta y Arroz",
-  "Aceites y Grasas",
-  "Pan y Repostería",
-  "Frutos Secos",
-  "Bebidas",
-  "Dulces y Postres",
-  "Salsas y Condimentos",
-  "Mermeladas y Conservas",
-  "Alimentos Vegetales"
-]
+
 
 export const MyBar = () => {
   const { theme } = useTheme(); // 'light' o 'dark'
@@ -67,7 +57,7 @@ export const MyBar = () => {
     },
     margin: {
       top: 50,
-      right: 180,    // Aumentado para que la leyenda quede fuera del gráfico
+      right: 20,    // Reducido para eliminar el espacio en blanco
       bottom: isSmallScreen ? 90 : 80,
       left: 60
     },
@@ -95,65 +85,43 @@ export const MyBar = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full border border-gray-200 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800"
+    <div className="w-full border border-gray-200 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800 overflow-hidden"
       style={{ zIndex: 0, position: 'relative', minHeight: 400, maxHeight: 1100 }}
     >
-      <div style={{ height: '40vw', minHeight: 200, maxHeight: 500 }}>
-        <ResponsiveBar
-          {...commonProps}
-          keys={keys1}
-          legends={[
-            {
-              dataFrom: 'keys',
-              anchor: 'bottom-right',
-              direction: 'column',
-              translateX: 40,  // Más a la derecha
-              translateY: 40,
-              itemsSpacing: 3,
-              itemWidth: 100,
-              itemHeight: 16,
-              itemTextColor: legendTextColor,
-              symbolSize: 16,
-              effects: [
-                {
-                  on: 'hover',
-                  style: {
-                    itemTextColor: theme === 'dark' ? '#fff' : '#000'
-                  }
-                }
-              ]
-            }
-          ]}
-        />
-      </div>
+      <div className="flex flex-col lg:flex-row">
+        <div className="flex-1 min-w-0">
+          <div style={{ height: '40vw', minHeight: 200, maxHeight: 500 }}>
+            <ResponsiveBar
+              {...commonProps}
+              keys={keys1}
+            />
+          </div>
+        </div>
 
-      <div style={{ height: '40vw', minHeight: 200, maxHeight: 500 }}>
-        <ResponsiveBar
-          {...commonProps}
-          keys={keys2}
-          legends={[
-            {
-              dataFrom: 'keys',
-              anchor: 'bottom-right',
-              direction: 'column',
-              translateX: 40,  // Más a la derecha
-              translateY: 40,
-              itemsSpacing: 3,
-              itemWidth: 100,
-              itemHeight: 16,
-              itemTextColor: legendTextColor,
-              symbolSize: 16,
-              effects: [
-                {
-                  on: 'hover',
-                  style: {
-                    itemTextColor: theme === 'dark' ? '#fff' : '#000'
-                  }
-                }
-              ]
-            }
-          ]}
-        />
+        {/* Leyenda personalizada */}
+        <div className="lg:w-64 w-full p-4 lg:border-l lg:border-t border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Categorías de Alimentos</h3>
+          
+          <div className="space-y-3">
+            <div>
+              <h4 className="font-medium text-sm text-gray-700 dark:text-gray-300 mb-2">Grupo 1:</h4>
+              <div className="space-y-2">
+                {keys1.map((key, index) => (
+                  <div key={key} className="flex items-center gap-2">
+                    <div 
+                      className="w-4 h-4 rounded flex-shrink-0"
+                      style={{ 
+                        backgroundColor: `hsl(${index * 25}, 70%, 50%)`,
+                        border: '1px solid #ccc'
+                      }}
+                    ></div>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 truncate">{key}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
