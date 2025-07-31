@@ -21,7 +21,7 @@ export default function EcommerceMetrics() {
               Producto desperdiciado
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3.782
+              532 Kg
             </h4>
           </div>
           <Badge color="success">

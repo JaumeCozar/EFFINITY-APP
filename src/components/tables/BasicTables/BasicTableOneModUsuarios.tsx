@@ -178,12 +178,12 @@ export default function BasicTableOneModUsuarios() {
   // Mostrar la alerta de confirmación de SweetAlert2
   swalWithBootstrapButtons
     .fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
       reverseButtons: true,
     })
     .then(async (result) => {
