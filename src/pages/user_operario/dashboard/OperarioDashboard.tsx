@@ -133,7 +133,7 @@ function OperarioDashboard() {
                 }`}
               >
                 <span>{food.emoji}</span>
-                <span>{food.name.length > 15 ? food.name.slice(0, 12) + '...' : food.name}</span>
+                <span>{food.name.length > 15 ? food.name.slice(0, 11) + '...' : food.name}</span>
 
               </button>
             ))}
