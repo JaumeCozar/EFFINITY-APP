@@ -214,6 +214,10 @@ const handleUpdateKitchen = async () => {
   }
 };
 
+const getRandomKitchenImage = (id: number) => {
+  return `https://picsum.photos/seed/kitchen${id}/400/400`;
+};
+
 
   return (
     <>
@@ -257,7 +261,13 @@ const handleUpdateKitchen = async () => {
             <div className="flex flex-col mb-4 xl:mb-0 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex flex-col my-4 items-center w-full gap-3 xl:flex-row">
                 <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-                  <img src={kitchen.imageUrl || ""} alt={kitchen.name} />
+                  {/* <img src={kitchen.imageUrl || ""} alt={kitchen.name} /> */}
+                  <img
+                    src={kitchen.imageUrl || getRandomKitchenImage(kitchen.id)}
+                    alt={kitchen.name}
+                    className="object-cover w-full h-full"
+                  />
+
                 </div>
                 <div className="order-3 xl:order-2">
                   <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">

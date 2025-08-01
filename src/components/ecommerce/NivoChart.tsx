@@ -90,7 +90,8 @@ export const MyBar = () => {
     >
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1 min-w-0">
-          <div style={{ height: '40vw', minHeight: 200, maxHeight: 500 }}>
+          <div style={{ height: '400px', width: '100%' }}>
+
             <ResponsiveBar
               {...commonProps}
               keys={keys1}

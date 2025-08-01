@@ -460,7 +460,7 @@ await fetchUsers();
               <img
                 width={80}
                 height={80}
-                src="./images/user/user-01.jpg"
+                src={`https://i.pravatar.cc/150?u=${user.email}`}
                 alt={user.name}
                 className="object-cover w-full h-full"
               />

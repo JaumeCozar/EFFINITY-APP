@@ -98,7 +98,7 @@ function OperarioDashboard() {
 
   return (
     <div className="max-w-md mx-auto p-4 font-sans">
-      <ToastContainer position="bottom-left" autoClose={3000} hideProgressBar />
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
 
       <h1 className="text-2xl font-semibold mb-4 text-center">Registrar Desperdicio de Comida</h1>
 

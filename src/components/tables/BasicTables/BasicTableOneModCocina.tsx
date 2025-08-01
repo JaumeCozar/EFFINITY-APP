@@ -294,7 +294,8 @@ export default function BasicTableOneModCocina() {
           </div>
         </div>
 
-        <div className="w-full xl:max-w-screen-xl mx-auto overflow-x-auto box-border ">
+        <div className="w-full max-w-[1160px] mx-auto px-4">
+
           <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-2 scrollbar-hide touch-pan-x pb-3 pt-2 px-2 scroll-px-4 custom-scrollbar">
             {tipoAlimentoData.map((tipo) => (
   <label

@@ -8,7 +8,7 @@
 /* Desktop normal (sidebar de 290px visible) */
 @media (min-width: 1024px) {
   .layout-wrapper {
-    width: calc(100vw - 290px);
+    /* width: calc(100vw - 290px); */
     max-width: 1280px;
   }
 }
